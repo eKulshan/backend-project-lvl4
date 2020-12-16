@@ -1,0 +1,24 @@
+extends ../layouts/application
+
+block header
+  h1= 'Пользователи'
+block content
+  table.table.table-dark
+    thead
+      tr
+        th(scope='col')= t('views.users.id')
+        th(scope='col')= t('views.users.firstName')
+        th(scope='col')= t('views.users.lastName')
+        th(scope='col')= t('views.users.email')
+        th(scope='col')= t('views.users.createdAt')
+        th(scope='col')= t('views.users.updatedAt')
+    tbody
+      each user in users
+        tr
+          td= user.id
+          td= user.firstname
+          td= user.lastname
+          td= user.email
+          td= user.createdAt
+          td= user.updatedAt
+  

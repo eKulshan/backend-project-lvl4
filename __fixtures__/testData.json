@@ -1,0 +1,21 @@
+{
+  "users": {
+    "new": {
+      "firstname": "Dora",
+      "lastname": "Beer",
+      "email": "Amiya0@yahoo.com",
+      "password": "_A48zZGbatyslPM"
+    },
+    "existing": {
+      "firstname": "Bill",
+      "lastname": "Homenick",
+      "email": "Jaquelin.Konopelski@hotmail.com",
+      "password": "i3uViox8wUDD173"
+    },
+    "updateData": {
+      "firstname": "Jaquelin",
+      "lastname": "Konopleski",
+      "email": "jaq.kon@hotmail.com"
+    }
+  }
+}

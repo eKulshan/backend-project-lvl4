@@ -1,10 +1,16 @@
-setup: install
+setup: install db-migrate
 
 install:
 	npm install
 
+db-migrate:
+	npx knex migrate:latest
+
 build:
 	npm run build
+
+prepare:
+	touch .env
 
 start:
 	heroku local -f Procfile
@@ -20,3 +26,6 @@ lint:
 
 test:
 	npm test -s
+	
+test-coverage:
+	npm test -- --coverage --coverageProvider=v8
