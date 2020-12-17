@@ -40,22 +40,22 @@ describe('test users CRUD', () => {
   });
 
   it('create', async () => {
-    const existingUserData = testData.users.new;
+    const newUserData = testData.users.new;
     const response = await app.inject({
       method: 'POST',
       url: app.reverse('users'),
       payload: {
-        data: existingUserData,
+        data: newUserData,
       },
     });
 
     expect(response.statusCode).toBe(302);
 
     const expected = {
-      ..._.omit(existingUserData, 'password'),
-      passwordDigest: encrypt(existingUserData.password),
+      ..._.omit(newUserData, 'password'),
+      passwordDigest: encrypt(newUserData.password),
     };
-    const user = await models.user.query().findOne({ email: existingUserData.email });
+    const user = await models.user.query().findOne({ email: newUserData.email });
     expect(user).toMatchObject(expected);
   });
 
@@ -101,7 +101,6 @@ describe('test users CRUD', () => {
         data: existingUserData,
       },
     });
-
     expect(responseSignIn.statusCode).toBe(302);
 
     const [sessionCookie] = responseSignIn.cookies;
@@ -114,7 +113,6 @@ describe('test users CRUD', () => {
       url: `/users/${id}`,
       cookies: cookie,
     });
-
     expect(responseDeleteUser.statusCode).toBe(302);
 
     const expected = await models.user.query().findById(id);

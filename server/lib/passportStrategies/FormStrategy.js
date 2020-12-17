@@ -8,8 +8,7 @@ export default class FormStrategy extends Strategy {
   }
 
   async authenticate(request) {
-    const { id } = request.params;
-    if (request.isAuthenticated() && Number(id) === request.user.id) {
+    if (request.isAuthenticated()) {
       return this.pass();
     }
 

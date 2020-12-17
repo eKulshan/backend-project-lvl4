@@ -8,7 +8,7 @@ import _ from 'lodash';
  */
 export const buildFromObj = (object, errors = {}) => ({
   init: false,
-  name: 'form',
+  name: 'authenticate',
   form: object,
   errors: _.groupBy(errors, 'path'),
 });
@@ -19,7 +19,7 @@ export const buildFromObj = (object, errors = {}) => ({
  */
 export const buildFromModel = (object, errors = {}) => ({
   init: true,
-  name: 'form',
+  name: 'authenticate',
   form: Object.keys(object).reduce((acc, field) => ({ ...acc, [field]: '' }), {}),
   errors,
 });

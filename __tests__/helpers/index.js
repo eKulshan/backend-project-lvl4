@@ -11,4 +11,5 @@ export const prepareData = async (app) => {
   const { knex } = app.objection;
 
   await knex('users').insert(getFixtureData('users.json'));
+  await knex('statuses').insert(getFixtureData('statuses.json'));
 };

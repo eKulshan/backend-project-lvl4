@@ -22,6 +22,7 @@ import getHelpers from './helpers/index.js';
 import knexConfig from '../knexfile.js';
 import models from './models/index.js';
 import FormStrategy from './lib/passportStrategies/FormStrategy.js';
+import AuthorizeStrategy from './lib/passportStrategies/AuthorizeStrategy.js';
 
 const mode = process.env.NODE_ENV || 'development';
 const isProduction = mode === 'production';
@@ -95,19 +96,20 @@ const registerPlugins = (app) => {
     (user) => app.objection.models.user.query().findById(user.id),
   );
   fastifyPassport.registerUserSerializer((user) => Promise.resolve(user));
-  fastifyPassport.use(new FormStrategy('form', app));
+  fastifyPassport.use(new FormStrategy('authenticate', app));
+  fastifyPassport.use(new AuthorizeStrategy('authorize', app));
   app.register(fastifyPassport.initialize());
   app.register(fastifyPassport.secureSession());
   app.decorate('fp', fastifyPassport);
   app.decorate('authenticate', (...args) => fastifyPassport.authenticate(
-    'form',
+    'authenticate',
     {
       failureRedirect: app.reverse('root'),
       failureFlash: i18next.t('flash.authError'),
     },
   )(...args));
-  app.decorate('authorize', (...args) => fastifyPassport.authorize(
-    'form',
+  app.decorate('authorize', (...args) => fastifyPassport.authenticate(
+    'authorize',
     {
       failureRedirect: app.reverse('users'),
       failureFlash: i18next.t('flash.authorizeError'),

@@ -17,5 +17,16 @@
       "lastname": "Konopleski",
       "email": "jaq.kon@hotmail.com"
     }
+  },
+  "statuses": {
+    "new": {
+      "name": "Assigned"
+    },
+    "existing": {
+      "name": "Inactive"
+    },
+    "updateData": {
+      "name": "Research"
+    }
   }
 }
