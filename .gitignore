@@ -6,5 +6,5 @@ dist/
 tmp/
 temp/
 database.sqlite
-.env
+Procfile.dev
 coverage
