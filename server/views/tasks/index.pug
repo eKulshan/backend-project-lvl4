@@ -1,0 +1,34 @@
+extends ../layouts/application
+
+block header
+  h1= 'Задачи'
+block content
+  if isAuthenticated()
+    a.btn.btn-link.text-info(href=route('newTask'))= t('views.tasks.index.create')
+  table.table.table-dark
+    thead
+      tr
+        th(scope='col')= t('views.tasks.index.id')
+        th(scope='col')= t('views.tasks.index.name')
+        th(scope='col')= t('views.tasks.index.description')
+        th(scope='col')= t('views.tasks.index.status_id')
+        th(scope='col')= t('views.tasks.index.creator_id')
+        th(scope='col')= t('views.tasks.index.executor_id')
+        th(scope='col')= t('views.tasks.index.createdAt')
+        th(scope='col')= t('views.tasks.index.updatedAt')
+    tbody
+      each task in tasks
+        tr
+          td= task.id
+          td= task.name
+          td= task.description
+          td= task.status.name
+          td= task.creator.firstname
+          td= task.executor.firstname
+          td= task.createdAt
+          td= task.updatedAt
+          td
+            a.btn.btn-link.text-warning(href=`/tasks/${task.id}/edit`)= t('views.tasks.index.edit')
+            form(action=`/tasks/${task.id}` method='post')
+              input(type='hidden' name='_method' value='delete')
+              input.btn.btn-link.text-danger(type='submit' value= t('views.tasks.index.delete'))

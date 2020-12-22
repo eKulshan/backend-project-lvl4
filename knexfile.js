@@ -3,6 +3,9 @@ const path = require('path');
 const migrations = {
   directory: path.resolve('server', 'migrations'),
 };
+const seeds = {
+  directory: path.resolve('server', 'seeds'),
+};
 
 module.exports = {
   development: {
@@ -12,6 +15,7 @@ module.exports = {
     },
     useNullAsDefault: true,
     migrations,
+    seeds,
   },
   test: {
     client: 'sqlite3',

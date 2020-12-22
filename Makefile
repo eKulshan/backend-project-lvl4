@@ -1,8 +1,14 @@
 install:
 	npm install
 
+db:
+	make db-migrate db-seed
+
 db-migrate:
 	npx knex migrate:latest
+
+db-seed:
+	npx knex seed:run
 
 build:
 	npm run build

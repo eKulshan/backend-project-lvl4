@@ -28,5 +28,42 @@
     "updateData": {
       "name": "Research"
     }
+  },
+  "tasks": {
+    "new": {
+      "name": "Job3",
+      "description": "Get Job3 done!",
+      "status_id": 1,
+      "creator_id": 1,
+      "executor_id": 1
+    },
+    "expectedNew": {
+      "name": "Job3",
+      "description": "Get Job3 done!",
+      "statusId": 1,
+      "creatorId": 1,
+      "executorId": 1
+    },
+    "existing": {
+      "name": "Job1",
+      "description": "Get Job1 done!",
+      "status_id": 1,
+      "creator_id": 1,
+      "executor_id": 1
+    },
+    "updateData": {
+      "name": "Job1",
+      "description": "Get Job1 done! Needs some additional research.",
+      "status_id": 2,
+      "creator_id": 1,
+      "executor_id": 1
+    },
+    "expectedUpdatedData": {
+      "name": "Job1",
+      "description": "Get Job1 done! Needs some additional research.",
+      "statusId": 2,
+      "creatorId": 1,
+      "executorId": 1
+    }
   }
 }
