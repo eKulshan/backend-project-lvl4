@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import getApp from '../server/index.js';
 import encrypt from '../server/lib/secure.js';
-import { getTestData, prepareData } from './helpers/index.js';
+import {
+  getTestData, prepareData, logInUser, getCookie,
+} from './helpers/index.js';
 
 describe('test users CRUD', () => {
   let app;
@@ -40,78 +42,45 @@ describe('test users CRUD', () => {
   });
 
   it('create', async () => {
-    const newUserData = testData.users.new;
     const response = await app.inject({
       method: 'POST',
       url: app.reverse('users'),
       payload: {
-        data: newUserData,
+        data: testData.users.new,
       },
     });
-
     expect(response.statusCode).toBe(302);
 
     const expected = {
-      ..._.omit(newUserData, 'password'),
-      passwordDigest: encrypt(newUserData.password),
+      ..._.omit(testData.users.new, 'password'),
+      passwordDigest: encrypt(testData.users.new.password),
     };
-    const user = await models.user.query().findOne({ email: newUserData.email });
+    const user = await models.user.query().findOne({ email: testData.users.new.email });
     expect(user).toMatchObject(expected);
   });
 
   it('update', async () => {
-    const existingUserData = testData.users.existing;
-    const responseSignIn = await app.inject({
-      method: 'POST',
-      url: app.reverse('session'),
-      payload: {
-        data: existingUserData,
-      },
-    });
-
-    expect(responseSignIn.statusCode).toBe(302);
-
-    const [sessionCookie] = responseSignIn.cookies;
-    const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
-
-    const { id } = await models.user.query().findOne({ email: existingUserData.email });
-    const dataForUpdate = testData.users.updateData;
+    const { id } = await models.user.query().findOne({ email: testData.users.existing.email });
     const responseUpdateUser = await app.inject({
       method: 'PATCH',
       url: `/users/${id}`,
       payload: {
-        data: { ...existingUserData, ...dataForUpdate },
+        data: { ...testData.users.existing, ...testData.users.updateData },
       },
-      cookies: cookie,
+      cookies: getCookie(await logInUser(app, testData.users.existing)),
     });
-
     expect(responseUpdateUser.statusCode).toBe(302);
 
-    const expected = await models.user.query().findOne({ email: dataForUpdate.email });
-    expect(expected).toMatchObject(_.omit({ ...existingUserData, ...dataForUpdate }, 'password'));
+    const expected = await models.user.query().findOne({ email: testData.users.updateData.email });
+    expect(expected).toMatchObject(_.omit({ ...testData.users.existing, ...testData.users.updateData }, 'password'));
   });
 
   it('delete', async () => {
-    const existingUserData = testData.users.existing;
-    const responseSignIn = await app.inject({
-      method: 'POST',
-      url: app.reverse('session'),
-      payload: {
-        data: existingUserData,
-      },
-    });
-    expect(responseSignIn.statusCode).toBe(302);
-
-    const [sessionCookie] = responseSignIn.cookies;
-    const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
-
-    const { id } = await models.user.query().findOne({ email: existingUserData.email });
+    const { id } = await models.user.query().findOne({ email: testData.users.existing.email });
     const responseDeleteUser = await app.inject({
       method: 'DELETE',
       url: `/users/${id}`,
-      cookies: cookie,
+      cookies: getCookie(await logInUser(app, testData.users.existing)),
     });
     expect(responseDeleteUser.statusCode).toBe(302);
 

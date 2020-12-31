@@ -3,7 +3,7 @@ import {
   getTestData, prepareData, logInUser, getCookie,
 } from './helpers/index.js';
 
-describe('test statuses CRUD', () => {
+describe('test labels CRUD', () => {
   let app;
   let knex;
   let models;
@@ -24,7 +24,7 @@ describe('test statuses CRUD', () => {
   it('read', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('statuses'),
+      url: app.reverse('labels'),
     });
 
     expect(response.statusCode).toBe(200);
@@ -41,10 +41,10 @@ describe('test statuses CRUD', () => {
   });
 
   it('create', async () => {
-    const newStatusData = testData.statuses.new;
+    const newStatusData = testData.labels.new;
     const response = await app.inject({
       method: 'POST',
-      url: app.reverse('statuses'),
+      url: app.reverse('labels'),
       payload: {
         data: newStatusData,
       },
@@ -53,16 +53,16 @@ describe('test statuses CRUD', () => {
     expect(response.statusCode).toBe(302);
 
     const expected = { ...newStatusData };
-    const status = await models.status.query().findOne({ name: newStatusData.name });
-    expect(status).toMatchObject(expected);
+    const labels = await models.label.query().findOne({ name: newStatusData.name });
+    expect(labels).toMatchObject(expected);
   });
 
   it('update', async () => {
-    const dataForUpdate = testData.statuses.updateData;
-    const { id } = await models.status.query().findOne({ name: testData.statuses.existing.name });
+    const dataForUpdate = testData.labels.updateData;
+    const { id } = await models.label.query().findOne({ name: testData.labels.existing.name });
     const response = await app.inject({
       method: 'PATCH',
-      url: `/statuses/${id}`,
+      url: `/labels/${id}`,
       payload: {
         data: { ...dataForUpdate },
       },
@@ -70,21 +70,21 @@ describe('test statuses CRUD', () => {
     });
     expect(response.statusCode).toBe(302);
 
-    const expected = await models.status.query().findOne({ name: dataForUpdate.name });
+    const expected = await models.label.query().findOne({ name: dataForUpdate.name });
     expect(expected).toMatchObject(dataForUpdate);
   });
 
   it('delete', async () => {
-    const existingStatusData = testData.statuses.existing;
-    const { id } = await models.status.query().findOne({ name: existingStatusData.name });
+    const existingStatusData = testData.labels.existing;
+    const { id } = await models.label.query().findOne({ name: existingStatusData.name });
     const response = await app.inject({
       method: 'DELETE',
-      url: `/statuses/${id}`,
+      url: `/labels/${id}`,
       cookies: getCookie(await logInUser(app, testData.users.existing)),
     });
     expect(response.statusCode).toBe(302);
 
-    const expected = await models.status.query().findById(id);
+    const expected = await models.label.query().findById(id);
     expect(expected).toBeUndefined();
   });
 

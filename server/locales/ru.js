@@ -39,6 +39,20 @@ module.exports = {
           success: 'Статус успешно удален',
         },
       },
+      labels: {
+        create: {
+          error: 'Не удалось cоздать метку',
+          success: 'Метка успешно создана',
+        },
+        update: {
+          error: 'Не удалось обновить метку',
+          success: 'Метка успешно обновлена',
+        },
+        delete: {
+          error: 'Не удалось удалить метку',
+          success: 'Метка успешно удалена',
+        },
+      },
       tasks: {
         create: {
           error: 'Не удалось cоздать задачу',
@@ -54,7 +68,7 @@ module.exports = {
         },
       },
       authenticateError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
-      authorizeError: 'Доступ запрещен! Можно редактировать только свои данные.',
+      authorizeError: 'Доступ запрещен! У вас нет прав на это действие.',
     },
     layouts: {
       application: {
@@ -66,6 +80,7 @@ module.exports = {
         deleteProfile: 'Удалить профиль',
         statuses: 'Статусы',
         tasks: 'Задачи',
+        labels: 'Метки',
       },
     },
     views: {
@@ -99,8 +114,6 @@ module.exports = {
         index: {
           id: 'ID',
           name: 'Название',
-          createdAt: 'Создан',
-          updatedAt: 'Изменен',
           edit: 'Редактировать',
           delete: 'Удалить',
           create: 'Создать',
@@ -114,12 +127,30 @@ module.exports = {
           submit: 'Сохранить',
         },
       },
+      labels: {
+        index: {
+          id: 'ID',
+          name: 'Название',
+          edit: 'Редактировать',
+          delete: 'Удалить',
+          create: 'Создать',
+        },
+        new: {
+          create: 'Создать метку',
+          submit: 'Сохранить',
+        },
+        edit: {
+          edit: 'Редактировать метку',
+          submit: 'Сохранить',
+        },
+      },
       tasks: {
         index: {
           id: 'ID',
           name: 'Название',
           description: 'Описание',
           status_id: 'Статус',
+          labels: 'Метки',
           creator_id: 'Создатель',
           executor_id: 'Исполнитель',
           createdAt: 'Создан',

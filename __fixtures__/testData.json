@@ -33,9 +33,10 @@
     "new": {
       "name": "Job3",
       "description": "Get Job3 done!",
-      "status_id": 1,
-      "creator_id": 1,
-      "executor_id": 1
+      "status_id": "1",
+      "creator_id": "1",
+      "executor_id": "1",
+      "labels": "1"
     },
     "expectedNew": {
       "name": "Job3",
@@ -54,9 +55,10 @@
     "updateData": {
       "name": "Job1",
       "description": "Get Job1 done! Needs some additional research.",
-      "status_id": 2,
-      "creator_id": 1,
-      "executor_id": 1
+      "status_id": "2",
+      "creator_id": "1",
+      "executor_id": "1",
+      "labels": ["2", "4"]
     },
     "expectedUpdatedData": {
       "name": "Job1",
@@ -64,6 +66,17 @@
       "statusId": 2,
       "creatorId": 1,
       "executorId": 1
+    }
+  },
+  "labels": {
+    "new": {
+      "name": "Mail"
+    },
+    "existing": {
+      "name": "Urgently"
+    },
+    "updateData": {
+      "name": "Immediately"
     }
   }
 }

@@ -1,26 +1,26 @@
 extends ../layouts/application
 
 block header
-  h1= 'Статусы задач'
+  .container.row
+    .col-auto
+      h1= 'Статусы задач'
+    .col-auto
+      if isAuthenticated()
+        a.btn.btn-primary.ml-auto(href=route('newStatus'))= t('views.statuses.index.create')
 block content
-  if isAuthenticated()
-    a.btn.btn-link.text-info(href=route('newStatus'))= t('views.statuses.index.create')
-  table.table.table-dark
+  table.table
     thead
       tr
         th(scope='col')= t('views.statuses.index.id')
         th(scope='col')= t('views.statuses.index.name')
-        th(scope='col')= t('views.statuses.index.createdAt')
-        th(scope='col')= t('views.statuses.index.updatedAt')
     tbody
       each status in statuses
         tr
           td= status.id
           td= status.name
-          td= status.createdAt
-          td= status.updatedAt
           td
             a.btn.btn-link.text-warning(href=`/statuses/${status.id}/edit`)= t('views.statuses.index.edit')
+          td 
             form(action=`/statuses/${status.id}` method='post')
               input(type='hidden' name='_method' value='delete')
               input.btn.btn-link.text-danger(type='submit' value= t('views.statuses.index.delete'))

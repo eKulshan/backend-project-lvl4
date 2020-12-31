@@ -1,22 +1,13 @@
 import getApp from '../server/index.js';
-import { getTestData, prepareData } from './helpers/index.js';
+import {
+  getTestData, prepareData, logInUser, getCookie,
+} from './helpers/index.js';
 
 describe('test tasks CRUD', () => {
   let app;
   let knex;
   let models;
   let testData;
-  const logInUser = async () => {
-    const userData = testData.users.existing;
-    const response = await app.inject({
-      method: 'POST',
-      url: app.reverse('session'),
-      payload: {
-        data: userData,
-      },
-    });
-    return response;
-  };
 
   beforeAll(async () => {
     app = await getApp();
@@ -34,36 +25,23 @@ describe('test tasks CRUD', () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('tasks'),
+      cookies: getCookie(await logInUser(app, testData.users.existing)),
     });
 
     expect(response.statusCode).toBe(200);
   });
 
   it('new', async () => {
-    const responseUserLogIn = await logInUser();
-    expect(responseUserLogIn.statusCode).toBe(302);
-
-    const [sessionCookie] = responseUserLogIn.cookies;
-    const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
-
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('newTask'),
-      cookies: cookie,
+      cookies: getCookie(await logInUser(app, testData.users.existing)),
     });
 
     expect(response.statusCode).toBe(200);
   });
 
   it('create', async () => {
-    const responseUserLogIn = await logInUser();
-    expect(responseUserLogIn.statusCode).toBe(302);
-
-    const [sessionCookie] = responseUserLogIn.cookies;
-    const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
-
     const newTaskData = testData.tasks.new;
     const response = await app.inject({
       method: 'POST',
@@ -71,7 +49,7 @@ describe('test tasks CRUD', () => {
       payload: {
         data: newTaskData,
       },
-      cookies: cookie,
+      cookies: getCookie(await logInUser(app, testData.users.existing)),
     });
     expect(response.statusCode).toBe(302);
 
@@ -81,13 +59,6 @@ describe('test tasks CRUD', () => {
   });
 
   it('update', async () => {
-    const responseUserLogIn = await logInUser();
-    expect(responseUserLogIn.statusCode).toBe(302);
-
-    const [sessionCookie] = responseUserLogIn.cookies;
-    const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
-
     const { updateData } = testData.tasks;
     const { id } = await models.task.query().findOne({ name: testData.tasks.existing.name });
     const response = await app.inject({
@@ -96,7 +67,7 @@ describe('test tasks CRUD', () => {
       payload: {
         data: { ...updateData },
       },
-      cookies: cookie,
+      cookies: getCookie(await logInUser(app, testData.users.existing)),
     });
     expect(response.statusCode).toBe(302);
 
@@ -106,19 +77,12 @@ describe('test tasks CRUD', () => {
   });
 
   it('delete', async () => {
-    const responseUserLogIn = await logInUser();
-    expect(responseUserLogIn.statusCode).toBe(302);
-
-    const [sessionCookie] = responseUserLogIn.cookies;
-    const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
-
     const existingTaskData = testData.tasks.existing;
     const { id } = await models.task.query().findOne({ name: existingTaskData.name });
     const response = await app.inject({
       method: 'DELETE',
       url: `/tasks/${id}`,
-      cookies: cookie,
+      cookies: getCookie(await logInUser(app, testData.users.existing)),
     });
     expect(response.statusCode).toBe(302);
 

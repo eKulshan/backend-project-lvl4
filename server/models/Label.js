@@ -1,8 +1,8 @@
 import { Model } from 'objection';
 
-export default class Status extends Model {
+export default class Label extends Model {
   static get tableName() {
-    return 'statuses';
+    return 'labels';
   }
 
   static get jsonSchema() {

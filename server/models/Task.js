@@ -1,13 +1,32 @@
 import { Model } from 'objection';
-import objectionUnique from 'objection-unique';
 import User from './User.js';
 import Status from './Status.js';
+import Label from './Label.js';
 
-const unique = objectionUnique({ fields: ['name'] });
-
-export default class Task extends unique(Model) {
+export default class Task extends Model {
   static get tableName() {
     return 'tasks';
+  }
+
+  static get modifiers() {
+    return {
+      filterIsCreatorUser: (query, creatorId) => {
+        if (creatorId) query.andWhere({ creatorId });
+      },
+      filterStatus: (query, statusId) => {
+        if (statusId) query.andWhere({ statusId });
+      },
+      filterExecutor: (query, executorId) => {
+        if (executorId) query.andWhere({ executorId });
+      },
+      filterLabel: (query, labelId) => {
+        if (labelId) {
+          query.whereExists(
+            Task.relatedQuery('labels').where('label_id', labelId),
+          );
+        }
+      },
+    };
   }
 
   static get relationMappings() {
@@ -36,6 +55,18 @@ export default class Task extends unique(Model) {
           to: 'users.id',
         },
       },
+      labels: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Label,
+        join: {
+          from: 'tasks.id',
+          through: {
+            from: 'tasks_labels.task_id',
+            to: 'tasks_labels.label_id',
+          },
+          to: 'labels.id',
+        },
+      },
     };
   }
 
@@ -50,6 +81,7 @@ export default class Task extends unique(Model) {
         status_id: { type: 'number' },
         creator_id: { type: 'number' },
         executor_id: { type: 'number' },
+        labels: { type: ['number', 'array'], items: { type: 'object', properties: 'id' } },
       },
     };
   }

@@ -25,7 +25,6 @@ export default (app) => {
         reply.redirect(app.reverse('newSession'), {});
         return reply;
       } catch (e) {
-        console.log(e);
         req.flash('error', i18next.t('flash.users.create.error'));
         reply.render('users/new', { user: req.body.data, errors: e.data });
         return reply;

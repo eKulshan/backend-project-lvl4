@@ -1,7 +1,7 @@
 install:
 	npm install
 
-db:
+dev-db:
 	make db-migrate db-seed
 
 db-migrate:

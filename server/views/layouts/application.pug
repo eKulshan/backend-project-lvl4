@@ -13,12 +13,15 @@ html(lang="en").h-100
         span.navbar-toggler-icon
       .collapse.navbar-collapse
         ul.navbar-nav.mr-auto
-          li.nav-item
-            a.nav-link(href=route('users'))= t('layouts.application.users')
-          li.nav-item
-            a.nav-link(href=route('statuses'))= t('layouts.application.statuses')
-          li.nav-item
-            a.nav-link(href=route('tasks'))= t('layouts.application.tasks')
+          if isAuthenticated()
+            li.nav-item
+              a.nav-link(href=route('users'))= t('layouts.application.users')
+            li.nav-item
+              a.nav-link(href=route('statuses'))= t('layouts.application.statuses')
+            li.nav-item
+              a.nav-link(href=route('labels'))= t('layouts.application.labels')
+            li.nav-item
+              a.nav-link(href=route('tasks'))= t('layouts.application.tasks')
         ul.navbar-nav
           if isAuthenticated()
             li.nav-item

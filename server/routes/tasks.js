@@ -5,34 +5,55 @@ export default (app) => {
     .get('/tasks/:id/edit', { name: 'editTask', preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
       const task = await app.objection.models.task.query().findById(id);
-      reply.render('tasks/edit', { task });
+      const labels = await app.objection.models.label.query();
+      const statuses = await app.objection.models.status.query();
+      const users = await app.objection.models.user.query();
+      reply.render('tasks/edit', {
+        task, labels, users, statuses,
+      });
       return reply;
     })
     .get('/tasks/new', { name: 'newTask', preValidation: app.authenticate }, async (req, reply) => {
       const task = await new app.objection.models.task();
-      reply.render('tasks/new', { user: req.user, task });
+      const labels = await app.objection.models.label.query();
+      const statuses = await app.objection.models.status.query();
+      const users = await app.objection.models.user.query();
+      reply.render('tasks/new', {
+        user: req.user, task, labels, users, statuses,
+      });
       return reply;
     })
     .get('/tasks', { name: 'tasks' }, async (req, reply) => {
-      const tasks = await app.objection.models.task.query().withGraphFetched('[creator, executor, status]');
-      reply.render('tasks/index', { id: req?.user?.id, tasks });
+      const labels = await app.objection.models.label.query();
+      const statuses = await app.objection.models.status.query();
+      const users = await app.objection.models.user.query();
+      const { id } = req.user;
+      const query = req.query || {};
+      const tasks = await app.objection.models.task.query().withGraphFetched('[creator, executor, status, labels]')
+        .modify('filterStatus', query.status_id)
+        .modify('filterExecutor', query.executor_id)
+        .modify('filterIsCreatorUser', query.isCreatorUser === 'on' ? id : null)
+        .modify('filterLabel', query.labels_id);
+      reply.render('tasks/index', {
+        id, tasks, labels, statuses, users,
+      });
       return reply;
     })
     .post('/tasks', { preValidation: app.authenticate }, async (req, reply) => {
       try {
+        const { data } = req.body;
         const normalizedData = {
-          ...req.body.data,
-          status_id: Number(req.body.data.status_id),
-          creator_id: Number(req.body.data.creator_id),
-          executor_id: Number(req.body.data.executor_id),
+          ...data,
+          status_id: Number(data.status_id),
+          creator_id: Number(data.creator_id),
+          executor_id: Number(data.executor_id),
+          labels: [...data.labels].map((id) => ({ id: Number(id) })),
         };
-        const task = await app.objection.models.task.fromJson(normalizedData);
-        await app.objection.models.task.query().insert(task);
+        await app.objection.models.task.query().insertGraph(normalizedData, { relate: true });
         req.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect(app.reverse('tasks'), {});
         return reply;
       } catch (e) {
-        console.log(e);
         req.flash('error', i18next.t('flash.tasks.create.error'));
         reply.render('tasks/new', { task: req.body.data, errors: e.data });
         return reply;
@@ -41,21 +62,29 @@ export default (app) => {
     .patch('/tasks/:id', { preValidation: app.authenticate }, async (req, reply) => {
       try {
         const { id } = req.params;
-        const updateData = await app.objection.models.task.fromJson(req.body.data);
-        const task = await app.objection.models.task.query().findById(id);
-        await task.$query().update(updateData);
+        const { data } = req.body;
+        const normalizedData = {
+          id: Number(id),
+          ...data,
+          status_id: Number(data.status_id),
+          creator_id: Number(data.creator_id),
+          executor_id: Number(data.executor_id),
+          labels: [...data.labels].map((labelId) => ({ id: Number(labelId) })),
+        };
+        await app.objection.models.task.query()
+          .upsertGraph(normalizedData, { relate: true, unrelate: true });
         req.flash('info', i18next.t('flash.tasks.update.success'));
         reply.redirect(app.reverse('tasks'), {});
-      } catch ({ data }) {
+      } catch (e) {
         req.flash('error', i18next.t('flash.tasks.update.error'));
-        reply.render('tasks/edit', { task: req.body.data, errors: data });
+        reply.render('tasks/edit', { task: req.body.data, errors: e.data });
       }
     })
     .delete('/tasks/:id', { preValidation: app.authenticate }, async (req, reply) => {
       try {
         const { id } = req.params;
         const { creatorId } = await app.objection.models.task.query().findById(id);
-        if (Number(id) !== creatorId) {
+        if (req.user.id !== creatorId) {
           throw new Error();
         }
         await app.objection.models.task.query().deleteById(id);
