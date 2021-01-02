@@ -13,14 +13,16 @@ block content
       tr
         th(scope='col')= t('views.labels.index.id')
         th(scope='col')= t('views.labels.index.name')
+        th
+        th
     tbody
       each label in labels
         tr
           td= label.id
           td= label.name
           td
-            a.btn.btn-link.text-warning(href=`/labels/${label.id}/edit`)= t('views.labels.index.edit')
+            a.btn.btn-sm.btn-outline-warning(href=`/labels/${label.id}/edit`)= t('views.labels.index.edit')
           td  
             form(action=`/labels/${label.id}` method='post')
               input(type='hidden' name='_method' value='delete')
-              input.btn.btn-link.text-danger(type='submit' value= t('views.labels.index.delete'))
+              input.btn.btn-sm.btn-outline-danger(type='submit' value= t('views.labels.index.delete'))

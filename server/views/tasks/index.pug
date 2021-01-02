@@ -59,8 +59,8 @@ block content
           td= task.createdAt
           td= task.updatedAt
           td
-            a.btn.btn-link.text-warning(href=`/tasks/${task.id}/edit`)= t('views.tasks.index.edit')
+            a.btn.btn-sm.btn-outline-warning(href=`/tasks/${task.id}/edit`)= t('views.tasks.index.edit')
           td  
             form(action=`/tasks/${task.id}` method='post')
               input(type='hidden' name='_method' value='delete')
-              input.btn.btn-link.text-danger(type='submit' value= t('views.tasks.index.delete'))
+              input.btn.btn-sm.btn-outline-danger(type='submit' value= t('views.tasks.index.delete'))

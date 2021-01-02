@@ -13,14 +13,16 @@ block content
       tr
         th(scope='col')= t('views.statuses.index.id')
         th(scope='col')= t('views.statuses.index.name')
+        th
+        th
     tbody
       each status in statuses
         tr
           td= status.id
           td= status.name
           td
-            a.btn.btn-link.text-warning(href=`/statuses/${status.id}/edit`)= t('views.statuses.index.edit')
+            a.btn.btn-sm.btn-outline-warning(href=`/statuses/${status.id}/edit`)= t('views.statuses.index.edit')
           td 
             form(action=`/statuses/${status.id}` method='post')
               input(type='hidden' name='_method' value='delete')
-              input.btn.btn-link.text-danger(type='submit' value= t('views.statuses.index.delete'))
+              input.btn.btn-sm.btn-outline-danger(type='submit' value= t('views.statuses.index.delete'))
