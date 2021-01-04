@@ -30,5 +30,4 @@ module.exports = {
     migrations,
     seeds,
   },
-  
 };
