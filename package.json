@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "0.0.1",
   "description": "Task manager",
-  "main": "",
+  "main": "server/index.js",
   "scripts": {
     "test": "jest --colors ",
     "prebuild": "rm -rf dist",
