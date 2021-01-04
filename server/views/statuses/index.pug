@@ -8,8 +8,8 @@ block header
       if isAuthenticated()
         a.btn.btn-primary.ml-auto(href=route('newStatus'))= t('views.statuses.index.create')
 block content
-  table.table
-    thead
+  table.table.table-hover.border.border-grey
+    thead.thead-light
       tr
         th(scope='col')= t('views.statuses.index.id')
         th(scope='col')= t('views.statuses.index.name')
@@ -21,7 +21,7 @@ block content
           td= status.id
           td= status.name
           td
-            a.btn.btn-sm.btn-outline-warning(href=`/statuses/${status.id}/edit`)= t('views.statuses.index.edit')
+            a.btn.btn-sm.btn-outline-info(href=`/statuses/${status.id}/edit`)= t('views.statuses.index.edit')
           td 
             form(action=`/statuses/${status.id}` method='post')
               input(type='hidden' name='_method' value='delete')

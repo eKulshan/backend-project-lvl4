@@ -8,8 +8,8 @@ block header
        if isAuthenticated()
         a.btn.btn-primary.ml-auto(href=route('newLabel'))= t('views.labels.index.create')
 block content
-  table.table
-    thead
+  table.table.table-hover.border.border-grey
+    thead.thead-light
       tr
         th(scope='col')= t('views.labels.index.id')
         th(scope='col')= t('views.labels.index.name')
@@ -21,7 +21,7 @@ block content
           td= label.id
           td= label.name
           td
-            a.btn.btn-sm.btn-outline-warning(href=`/labels/${label.id}/edit`)= t('views.labels.index.edit')
+            a.btn.btn-sm.btn-outline-info(href=`/labels/${label.id}/edit`)= t('views.labels.index.edit')
           td  
             form(action=`/labels/${label.id}` method='post')
               input(type='hidden' name='_method' value='delete')
