@@ -1,10 +1,10 @@
 const path = require('path');
 
 const migrations = {
-  directory: path.resolve('server', 'migrations'),
+  directory: path.resolve('migrations'),
 };
 const seeds = {
-  directory: path.resolve('server', 'seeds'),
+  directory: path.resolve('seeds'),
 };
 
 module.exports = {
