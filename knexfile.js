@@ -1,10 +1,10 @@
 const path = require('path');
 
 const migrations = {
-  directory: 'migrations',
+  directory: path.join(__dirname, 'server', 'migrations'),
 };
 const seeds = {
-  directory: 'seeds',
+  directory: path.join(__dirname, 'server', 'seeds'),
 };
 
 module.exports = {
@@ -33,5 +33,6 @@ module.exports = {
     },
     useNullAsDefault: true,
     migrations,
+    seeds,
   },
 };
