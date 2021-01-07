@@ -88,6 +88,8 @@ module.exports = {
         new: {
           signIn: 'Вход',
           submit: 'Войти',
+          email: 'Email',
+          password: 'Пароль',
         },
       },
       users: {
@@ -100,6 +102,10 @@ module.exports = {
         new: {
           submit: 'Сохранить',
           signUp: 'Регистрация',
+          email: 'Email',
+          password: 'Пароль',
+          firstname: 'Имя',
+          lastname: 'Фамилия',
         },
         edit: 'Редактировать профиль',
       },

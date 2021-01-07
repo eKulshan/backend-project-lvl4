@@ -4,11 +4,11 @@ mixin formFor(entity = null)
   form&attributes(attributes)
     block
 
-mixin input(entity, propertyName, errors = [])
+mixin input(entity, labelName, propertyName, errors = [])
   - errors = Array(_.get(errors, propertyName, [])).flat()
   - classLine = 'form-control' + (_.isEmpty(errors) ? '' : ' is-invalid')
   .form-group(class=(errors[propertyName] && 'has-danger'))
-    label= propertyName
+    label= labelName
     input(
       name=getInputName(entity, propertyName)
       class=classLine
