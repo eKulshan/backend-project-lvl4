@@ -46,8 +46,8 @@ export default (app) => {
     .delete('/users/:id', { preValidation: app.authorize }, async (req, reply) => {
       try {
         const { id } = req.params;
-        req.logOut();
         await app.objection.models.user.query().deleteById(id);
+        req.logOut();
         req.flash('info', i18next.t('flash.users.delete.success'));
         reply.redirect(app.reverse('users'), {});
       } catch (e) {
