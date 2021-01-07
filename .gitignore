@@ -8,3 +8,4 @@ temp/
 database.sqlite
 Procfile.dev
 coverage
+server/seeds/

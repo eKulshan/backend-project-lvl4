@@ -33,6 +33,5 @@ module.exports = {
     },
     useNullAsDefault: true,
     migrations,
-    seeds,
   },
 };
