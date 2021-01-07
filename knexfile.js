@@ -25,10 +25,10 @@ module.exports = {
   },
   production: {
     client: 'pg',
-    connection: { 
-      connectionString: process.env.DATABASE_URL, 
+    connection: {
+      connectionString: process.env.DATABASE_URL,
       ssl: {
-        rejectUnauthorized: false
+        rejectUnauthorized: false,
       },
     },
     useNullAsDefault: true,
