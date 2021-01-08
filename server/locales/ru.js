@@ -107,7 +107,15 @@ module.exports = {
           firstname: 'Имя',
           lastname: 'Фамилия',
         },
-        edit: 'Редактировать профиль',
+        edit: {
+          edit: 'Редактировать профиль',
+          submit: 'Сохранить',
+          signUp: 'Регистрация',
+          email: 'Email',
+          password: 'Пароль',
+          firstname: 'Имя',
+          lastname: 'Фамилия',
+        },
       },
       welcome: {
         index: {
@@ -163,7 +171,7 @@ module.exports = {
           updatedAt: 'Изменен',
           edit: 'Редактировать',
           delete: 'Удалить',
-          create: 'Создать',
+          create: 'Создать задачу',
         },
         new: {
           create: 'Создать задачу',
