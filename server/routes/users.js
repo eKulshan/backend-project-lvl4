@@ -15,7 +15,7 @@ export default (app) => {
     })
     .get('/users', { name: 'users' }, async (req, reply) => {
       const users = await app.objection.models.user.query();
-      reply.render('users/index', { id: req.user.id, users });
+      reply.render('users/index', { id: req?.user?.id, users });
       return reply;
     })
     .post('/users', async (req, reply) => {

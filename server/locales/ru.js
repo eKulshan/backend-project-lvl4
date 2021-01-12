@@ -73,7 +73,7 @@ module.exports = {
     layouts: {
       application: {
         users: 'Пользователи',
-        signIn: 'Вход',
+        signIn: 'Войти',
         signUp: 'Регистрация',
         signOut: 'Выход',
         updateProfile: 'Изменить профиль',
