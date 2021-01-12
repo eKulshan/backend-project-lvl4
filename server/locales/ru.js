@@ -87,7 +87,7 @@ module.exports = {
       session: {
         new: {
           signIn: 'Вход',
-          submit: 'Войти',
+          submit: 'Вход',
           email: 'Email',
           password: 'Пароль',
         },
