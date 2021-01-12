@@ -28,7 +28,7 @@ html(lang="en").h-100
               form(action=`/users/${id}/edit`, method="get")
                 input(type='submit' class="btn nav-link" value=t('layouts.application.updateProfile'))
             li.nav-item
-              +buttonTo(`/users/${id}`, 'delete')(class="btn nav-link" value=t('layouts.application.deleteProfile'))
+              +buttonTo(`/users/${id}`, 'delete')(class="btn nav-link" value=t('layouts.application.deleteProfile') onclick= "return confirm('Вы подтверждаете удаление?')")
             li.nav-item
               +buttonTo(route('session'), 'delete')(class="btn nav-link" value=t('layouts.application.signOut'))
           else

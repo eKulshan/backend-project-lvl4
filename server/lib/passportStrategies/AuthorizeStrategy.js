@@ -12,7 +12,6 @@ export default class AuthorizeStrategy extends Strategy {
     }
 
     const { id = request.user.id } = request.params;
-
     if (Number(id) === request.user.id) {
       return this.pass();
     }

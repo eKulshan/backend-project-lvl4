@@ -11,16 +11,16 @@ export default (app) => {
     .get('/users/new', { name: 'newUser' }, (req, reply) => {
       const user = new app.objection.models.user();
       reply.render('users/new', { user });
+      return reply;
     })
     .get('/users', { name: 'users' }, async (req, reply) => {
       const users = await app.objection.models.user.query();
-      reply.render('users/index', { id: req?.user?.id, users });
+      reply.render('users/index', { id: req.user.id, users });
       return reply;
     })
     .post('/users', async (req, reply) => {
       try {
-        const user = await app.objection.models.user.fromJson(req.body.data);
-        await app.objection.models.user.query().insert(user);
+        await app.objection.models.user.query().insert(req.body.data);
         req.flash('info', i18next.t('flash.users.create.success'));
         reply.redirect(app.reverse('newSession'), {});
         return reply;
@@ -30,17 +30,35 @@ export default (app) => {
         return reply;
       }
     })
-    .patch('/users/:id', { preValidation: app.authorize }, async (req, reply) => {
+    .patch('/users/:id/password', { preValidation: app.authorize }, async (req, reply) => {
+      const { id } = req.params;
+      const user = await app.objection.models.user.query().findById(id);
       try {
-        const { id } = req.params;
-        const updateData = await app.objection.models.user.fromJson(req.body.data);
-        const user = await app.objection.models.user.query().findById(id);
-        await user.$query().update(updateData);
+        console.log('!!!!!!!!!!', req.body.data);
+        await user.$query().patch(req.body.data);
         req.flash('info', i18next.t('flash.users.update.success'));
         reply.redirect(app.reverse('root'), {});
+        return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.update.error'));
-        reply.render('users/edit', { user: req.body.data, errors: data });
+        reply.render('users/edit', { id: req.user.id, user, errors: data });
+        return reply;
+      }
+    })
+    .patch('/users/:id', { preValidation: app.authorize }, async (req, reply) => {
+      try {
+        console.log(req.body.data);
+        const { id } = req.params;
+        const user = await app.objection.models.user.query().findById(id);
+        await user.$query().patch(req.body.data);
+        req.flash('info', i18next.t('flash.users.update.success'));
+        reply.redirect(app.reverse('root'), {});
+        return reply;
+      } catch ({ data }) {
+        console.log('!!!!!', data);
+        req.flash('error', i18next.t('flash.users.update.error'));
+        reply.render('users/edit', { id: req.user.id, user: req.body.data, errors: data });
+        return reply;
       }
     })
     .delete('/users/:id', { preValidation: app.authorize }, async (req, reply) => {
@@ -49,10 +67,12 @@ export default (app) => {
         await app.objection.models.user.query().deleteById(id);
         req.logOut();
         req.flash('info', i18next.t('flash.users.delete.success'));
-        reply.redirect(app.reverse('users'), {});
+        reply.redirect(app.reverse('root'), {});
+        return reply;
       } catch (e) {
         req.flash('error', i18next.t('flash.users.delete.error'));
         reply.redirect(app.reverse('users'));
+        return reply;
       }
     });
 };

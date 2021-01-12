@@ -39,9 +39,11 @@ export default (app) => {
         await label.$query().update(updateData);
         req.flash('info', i18next.t('flash.labels.update.success'));
         reply.redirect(app.reverse('labels'), {});
+        return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.labels.update.error'));
         reply.render('labels/edit', { label: req.body.data, errors: data });
+        return reply;
       }
     })
     .delete('/labels/:id', { preValidation: app.authenticate }, async (req, reply) => {
@@ -50,9 +52,11 @@ export default (app) => {
         await app.objection.models.label.query().deleteById(id);
         req.flash('info', i18next.t('flash.labels.delete.success'));
         reply.redirect(app.reverse('labels'), {});
+        return reply;
       } catch (e) {
         req.flash('error', i18next.t('flash.labels.delete.error'));
         reply.redirect(app.reverse('labels'));
+        return reply;
       }
     });
 };

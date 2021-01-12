@@ -4,10 +4,18 @@ block header
   = t('views.users.edit.edit')
 
 block content
-  form(action=`/users/${user.id}` method='post')
-    +input(user, t('views.users.edit.firstname'), 'firstname', errors)(type="text")
-    +input(user, t('views.users.edit.lastname'), 'lastname', errors)(type="text") 
-    +input(user, t('views.users.edit.email'), 'email', errors)(type="text")
-    +input(user, t('views.users.edit.password'), 'password', errors)(type="password")
-    input(name="_method" type="hidden" value="patch")
-    +submit(user)(value=t('views.users.new.submit'))
+  h3= 'Изменнить данные'
+  form(action=`/users/${id}` method='post' id='form1')
+    +input(user, t('views.users.new.firstname'), 'firstname', errors)(type="text" form='form1')
+    +input(user, t('views.users.new.lastname'), 'lastname', errors)(type="text" form='form1')
+    +input(user, t('views.users.new.email'), 'email', errors)(type="text" form='form1')
+    input(name="_method" type="hidden" value="patch" form='form1')
+    .form-group
+      input(class='btn btn-primary' type='submit' value=t('views.users.edit.submit') form='form1')
+  
+  h3= 'Изменнить пароль'
+  form(action=`/users/${id}/password` method='post' id='form2')
+    +input(user, t('views.users.new.password'), 'password', errors)(type="password" form='form2')
+    input(name="_method" type="hidden" value="patch" form='form2')
+    .form-group
+      input(class='btn btn-primary' type='submit' value=t('views.users.edit.submit') form='form2')

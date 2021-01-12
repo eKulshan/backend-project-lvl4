@@ -5,25 +5,25 @@ block header
 
 block content
   +formFor()(action=route('tasks') method='post')
-    +input(task, 'name', errors)(type="text")
-    +input(task, 'description', errors)(type="text")
+    +input(task, t('views.tasks.index.name'), 'name', errors)(type="text")
+    +input(task, t('views.tasks.index.description'), 'description', errors)(type="text")
     .form-group
-      label(for='creatorSelect')= 'creator'
+      label(for='creatorSelect')= t('views.tasks.index.creator_id')
       select(class="form-control", name='data[creator_id]', id='creatorSelect')
         each user in users
           option(value=user.id)= `${user.fullName()}`
     .form-group
-      label(for='executorSelect')= 'executor'
+      label(for='executorSelect')= t('views.tasks.index.executor_id')
       select(class="form-control", name='data[executor_id]', id='executorSelect')
         each user in users
           option(value=user.id)= `${user.fullName()}`
     .form-group
-      label(for='statusSelect')= 'status'
+      label(for='statusSelect')= t('views.tasks.index.status_id')
       select(class="form-control", name='data[status_id]', id='statusSelect')
         each status in statuses
           option(value=status.id)= `${status.name}`
     .form-group
-      label(for='labelsSelect')= 'labels'    
+      label(for='labelsSelect')= t('views.tasks.index.labels')    
       select(class="form-control custom-select", size='3', multiple, name='data[labels]', id='labelsSelect')
         each label in labels
           option(value=label.id)= `${label.name}`

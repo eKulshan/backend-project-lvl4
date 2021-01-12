@@ -4,10 +4,11 @@ export default (app) => {
   app
     .get('/tasks/:id/edit', { name: 'editTask', preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
-      const task = await app.objection.models.task.query().findById(id);
+      const task = await app.objection.models.task.query().withGraphFetched('labels').findById(id);
       const labels = await app.objection.models.label.query();
       const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
+      console.log(task);
       reply.render('tasks/edit', {
         task, labels, users, statuses,
       });
@@ -75,9 +76,11 @@ export default (app) => {
           .upsertGraph(normalizedData, { relate: true, unrelate: true });
         req.flash('info', i18next.t('flash.tasks.update.success'));
         reply.redirect(app.reverse('tasks'), {});
+        return reply;
       } catch (e) {
         req.flash('error', i18next.t('flash.tasks.update.error'));
         reply.render('tasks/edit', { task: req.body.data, errors: e.data });
+        return reply;
       }
     })
     .delete('/tasks/:id', { preValidation: app.authenticate }, async (req, reply) => {
@@ -90,9 +93,11 @@ export default (app) => {
         await app.objection.models.task.query().deleteById(id);
         req.flash('info', i18next.t('flash.tasks.delete.success'));
         reply.redirect(app.reverse('tasks'), {});
+        return reply;
       } catch (e) {
         req.flash('error', i18next.t('flash.tasks.delete.error'));
         reply.redirect(app.reverse('tasks'));
+        return reply;
       }
     });
 };

@@ -13,13 +13,13 @@ export default (app) => {
       if (!user) {
         const signInForm = req.body.data;
         const errors = {
-          email: { message: i18next.t('flash.session.create.error') },
+          email: [{ message: i18next.t('flash.session.create.error') }],
         };
         return reply.render('session/new', { signInForm, errors });
       }
       await req.logIn(user);
       req.flash('success', i18next.t('flash.session.create.success'));
-      return reply.redirect(app.reverse('root'), { user });
+      return reply.redirect(app.reverse('root'), {});
     }))
     .delete('/session', (req, reply) => {
       req.logOut();
