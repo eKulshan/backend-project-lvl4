@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import customizeErrors from '../lib/customizeErrors.js';
 
 export default (app) => {
   app
@@ -24,9 +25,9 @@ export default (app) => {
         req.flash('info', i18next.t('flash.users.create.success'));
         reply.redirect(app.reverse('newSession'), {});
         return reply;
-      } catch (e) {
+      } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.create.error'));
-        reply.render('users/new', { user: req.body.data, errors: e.data });
+        reply.render('users/new', { user: req.body.data, errors: customizeErrors(data) });
         return reply;
       }
     })
@@ -34,20 +35,18 @@ export default (app) => {
       const { id } = req.params;
       const user = await app.objection.models.user.query().findById(id);
       try {
-        console.log('!!!!!!!!!!', req.body.data);
         await user.$query().patch(req.body.data);
         req.flash('info', i18next.t('flash.users.update.success'));
         reply.redirect(app.reverse('root'), {});
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.update.error'));
-        reply.render('users/edit', { id: req.user.id, user, errors: data });
+        reply.render('users/edit', { id: req.user.id, user, errors: customizeErrors(data) });
         return reply;
       }
     })
     .patch('/users/:id', { preValidation: app.authorize }, async (req, reply) => {
       try {
-        console.log(req.body.data);
         const { id } = req.params;
         const user = await app.objection.models.user.query().findById(id);
         await user.$query().patch(req.body.data);
@@ -55,9 +54,8 @@ export default (app) => {
         reply.redirect(app.reverse('root'), {});
         return reply;
       } catch ({ data }) {
-        console.log('!!!!!', data);
         req.flash('error', i18next.t('flash.users.update.error'));
-        reply.render('users/edit', { id: req.user.id, user: req.body.data, errors: data });
+        reply.render('users/edit', { id: req.user.id, user: req.body.data, errors: customizeErrors(data) });
         return reply;
       }
     })

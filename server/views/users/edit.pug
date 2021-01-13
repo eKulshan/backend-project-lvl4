@@ -15,7 +15,7 @@ block content
   
   h3= 'Изменнить пароль'
   form(action=`/users/${id}/password` method='post' id='form2')
-    +input(user, t('views.users.new.password'), 'password', errors)(type="password" form='form2')
+    +passwordInput(user, t('views.users.new.password'), 'password', errors)(type="password" form='form2')
     input(name="_method" type="hidden" value="patch" form='form2')
     .form-group
       input(class='btn btn-primary' type='submit' value=t('views.users.edit.submit') form='form2')

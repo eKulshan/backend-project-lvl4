@@ -73,7 +73,7 @@ module.exports = {
     layouts: {
       application: {
         users: 'Пользователи',
-        signIn: 'Войти',
+        signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
         updateProfile: 'Изменить профиль',
@@ -87,7 +87,7 @@ module.exports = {
       session: {
         new: {
           signIn: 'Вход',
-          submit: 'Вход',
+          submit: 'Войти',
           email: 'Email',
           password: 'Пароль',
         },
@@ -130,7 +130,7 @@ module.exports = {
           name: 'Название',
           edit: 'Редактировать',
           delete: 'Удалить',
-          create: 'Создать',
+          create: 'Создать статус',
         },
         new: {
           create: 'Создать статус',
@@ -147,7 +147,7 @@ module.exports = {
           name: 'Название',
           edit: 'Редактировать',
           delete: 'Удалить',
-          create: 'Создать',
+          create: 'Создать метку',
         },
         new: {
           create: 'Создать метку',
@@ -181,6 +181,11 @@ module.exports = {
           edit: 'Редактировать задачу',
           submit: 'Сохранить',
         },
+      },
+      errors: {
+        minLength: 'Не должно быть короче 3 символов',
+        format: 'Должно соответствовать формату эмейл',
+        default: 'Неизвестная ошибка',
       },
     },
   },

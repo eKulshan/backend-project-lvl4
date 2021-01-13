@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import customizeErrors from '../lib/customizeErrors.js';
 
 export default (app) => {
   app
@@ -8,7 +9,6 @@ export default (app) => {
       const labels = await app.objection.models.label.query();
       const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
-      console.log(task);
       reply.render('tasks/edit', {
         task, labels, users, statuses,
       });
@@ -48,15 +48,15 @@ export default (app) => {
           status_id: Number(data.status_id),
           creator_id: Number(data.creator_id),
           executor_id: Number(data.executor_id),
-          labels: [...data.labels].map((id) => ({ id: Number(id) })),
+          labels: data.labels ? [...data.labels].map((id) => ({ id: Number(id) })) : [],
         };
         await app.objection.models.task.query().insertGraph(normalizedData, { relate: true });
         req.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect(app.reverse('tasks'), {});
         return reply;
-      } catch (e) {
+      } catch ({ data }) {
         req.flash('error', i18next.t('flash.tasks.create.error'));
-        reply.render('tasks/new', { task: req.body.data, errors: e.data });
+        reply.render('tasks/new', { task: req.body.data, errors: customizeErrors(data) });
         return reply;
       }
     })
@@ -77,9 +77,9 @@ export default (app) => {
         req.flash('info', i18next.t('flash.tasks.update.success'));
         reply.redirect(app.reverse('tasks'), {});
         return reply;
-      } catch (e) {
+      } catch ({ data }) {
         req.flash('error', i18next.t('flash.tasks.update.error'));
-        reply.render('tasks/edit', { task: req.body.data, errors: e.data });
+        reply.render('tasks/edit', { task: req.body.data, errors: customizeErrors(data) });
         return reply;
       }
     })

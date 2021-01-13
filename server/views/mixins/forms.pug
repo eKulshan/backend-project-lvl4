@@ -22,6 +22,40 @@ mixin input(entity, labelName, propertyName, errors = {})
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
+mixin passwordInput(entity, labelName, propertyName, errors = {})
+  - propertyErrors = _.get(errors, propertyName)
+  - classLine = 'form-control' + (_.isEmpty(errors[propertyName]) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .form-group(class=(errors[propertyName] && 'has-danger'))
+    label(
+      for= inputId
+    )= labelName
+    input(
+      id= inputId
+      name=getInputName(propertyName)
+      class=classLine
+      value= ''
+    )&attributes(attributes)
+    if !_.isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+
+
+mixin textarea(entity, labelName, propertyName, errors = {})
+  - propertyErrors = _.get(errors, propertyName)
+  - classLine = 'form-control' + (_.isEmpty(errors[propertyName]) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .form-group(class=(errors[propertyName] && 'has-danger'))
+    label(
+      for= inputId
+    )= labelName
+    textarea(
+      id= inputId
+      name=getInputName(propertyName)
+      class=classLine
+    )= _.get(entity, propertyName, '')
+    if !_.isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+
 mixin submit(form = null)
   .form-group
     input(class='btn btn-primary' type='submit')&attributes(attributes)

@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import customizeErrors from '../lib/customizeErrors.js';
 
 export default (app) => {
   app
@@ -27,7 +28,7 @@ export default (app) => {
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.statuses.create.error'));
-        reply.render('statuses/new', { status: req.body.data, errors: data });
+        reply.render('statuses/new', { status: req.body.data, errors: customizeErrors(data) });
         return reply;
       }
     })
@@ -42,7 +43,7 @@ export default (app) => {
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.statuses.update.error'));
-        reply.render('statuses/edit', { status: req.body.data, errors: data });
+        reply.render('statuses/edit', { status: req.body.data, errors: customizeErrors(data) });
         return reply;
       }
     })

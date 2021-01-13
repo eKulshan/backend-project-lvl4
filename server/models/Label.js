@@ -11,7 +11,7 @@ export default class Label extends Model {
       required: ['name'],
       properties: {
         id: { type: 'integer' },
-        name: { type: 'string' },
+        name: { type: 'string', minLength: 3 },
       },
     };
   }
