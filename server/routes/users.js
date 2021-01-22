@@ -23,10 +23,11 @@ export default (app) => {
       try {
         await app.objection.models.user.query().insert(req.body.data);
         req.flash('info', i18next.t('flash.users.create.success'));
-        reply.redirect(app.reverse('newSession'), {});
+        reply.redirect(app.reverse('root'), {});
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.create.error'));
+        console.log(data);
         reply.render('users/new', { user: req.body.data, errors: customizeErrors(data) });
         return reply;
       }

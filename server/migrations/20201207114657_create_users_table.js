@@ -3,10 +3,10 @@ exports.up = (knex) => (
     table.increments('id').primary();
     table.string('email');
     table.string('password_digest');
-    table.string('firstname');
-    table.string('lastname');
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
+    table.string('firstName');
+    table.string('lastName');
+    table.timestamp('created_at', { useTz: false }).defaultTo(knex.fn.now());
+    table.timestamp('updated_at', { useTz: false }).defaultTo(knex.fn.now());
   })
 );
 

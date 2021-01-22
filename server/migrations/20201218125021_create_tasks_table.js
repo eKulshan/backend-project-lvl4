@@ -6,8 +6,8 @@ exports.up = (knex) => (
     table.integer('status_id').references('statuses.id').notNullable();
     table.integer('creator_id').references('users.id').notNullable();
     table.integer('executor_id').references('users.id');
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
+    table.timestamp('created_at', { useTz: false }).defaultTo(knex.fn.now());
+    table.timestamp('updated_at', { useTz: false }).defaultTo(knex.fn.now());
   })
 );
 

@@ -34,7 +34,8 @@ export default (app) => {
         .modify('filterStatus', query.status_id)
         .modify('filterExecutor', query.executor_id)
         .modify('filterIsCreatorUser', query.isCreatorUser === 'on' ? id : null)
-        .modify('filterLabel', query.labels_id);
+        .modify('filterLabel', query.labels_id)
+        .orderBy('id');
       reply.render('tasks/index', {
         id, tasks, labels, statuses, users,
       });
@@ -56,7 +57,17 @@ export default (app) => {
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.tasks.create.error'));
-        reply.render('tasks/new', { task: req.body.data, errors: customizeErrors(data) });
+        const labels = await app.objection.models.label.query();
+        const statuses = await app.objection.models.status.query();
+        const users = await app.objection.models.user.query();
+        reply.render('tasks/new', {
+          user: req.user,
+          labels,
+          users,
+          statuses,
+          task: req.body.data,
+          errors: customizeErrors(data),
+        });
         return reply;
       }
     })
@@ -70,7 +81,7 @@ export default (app) => {
           status_id: Number(data.status_id),
           creator_id: Number(data.creator_id),
           executor_id: Number(data.executor_id),
-          labels: [...data.labels].map((labelId) => ({ id: Number(labelId) })),
+          labels: data.labels ? [...data.labels].map((labelId) => ({ id: Number(labelId) })) : [],
         };
         await app.objection.models.task.query()
           .upsertGraph(normalizedData, { relate: true, unrelate: true });

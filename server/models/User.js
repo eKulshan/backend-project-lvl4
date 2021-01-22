@@ -13,13 +13,13 @@ export default class User extends unique(Model) {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['email', 'password', 'firstname', 'lastname'],
+      required: ['email', 'password', 'firstName', 'lastName'],
       properties: {
         id: { type: 'integer' },
         email: { type: 'string', format: 'email' },
         password: { type: 'string', minLength: 3 },
-        firstname: { type: 'string', minLength: 3 },
-        lastname: { type: 'string', minLength: 3 },
+        firstName: { type: 'string', minLength: 3 },
+        lastName: { type: 'string', minLength: 3 },
       },
     };
   }
@@ -29,7 +29,7 @@ export default class User extends unique(Model) {
   }
 
   fullName() {
-    return `${this.firstname} ${this.lastname}`;
+    return `${this.firstName} ${this.lastName}`;
   }
 
   verifyPassword(password) {

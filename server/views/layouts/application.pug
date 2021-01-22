@@ -36,7 +36,7 @@ html(lang="en").h-100
               a.nav-link(href=route('newSession'))= t('layouts.application.signIn')
             li.nav-item
               a.nav-link(href=route('newUser'))= t('layouts.application.signUp')
-    .container.h-100
+    .container.wrapper.flex-grow-1
 
       each messages, type in reply.flash() || []
         each message in messages
@@ -46,6 +46,6 @@ html(lang="en").h-100
         block header
       block content
 
-    footer.footer.mt-100
+    footer
       .container.my-5.pt-4.border-top
         a(target="_blank" href="https://ru.hexlet.io") Hexlet

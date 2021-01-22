@@ -1,13 +1,13 @@
 [
   {
-    "firstname": "Bill",
-    "lastname": "Homenick",
+    "firstName": "Bill",
+    "lastName": "Homenick",
     "email": "Jaquelin.Konopelski@hotmail.com",
     "passwordDigest": "64d787d7ad041092ac872e892dd4164c32bda70a304cc016ff25b0f0ae6140ba"
   },
   {
-    "firstname": "Lila",
-    "lastname": "Champlin",
+    "firstName": "Lila",
+    "lastName": "Champlin",
     "email": "Kamron_Nikolaus84@gmail.com",
     "passwordDigest": "41f42f3bbbb551c9532ce5e7108488923340f35a3a71e9bb044da9dacd3d6693"
   }

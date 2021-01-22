@@ -25,6 +25,7 @@ describe('test labels CRUD', () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('labels'),
+      cookies: getCookie(await logInUser(app, testData.users.existing)),
     });
 
     expect(response.statusCode).toBe(200);

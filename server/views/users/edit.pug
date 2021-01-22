@@ -6,8 +6,8 @@ block header
 block content
   h3= 'Изменнить данные'
   form(action=`/users/${id}` method='post' id='form1')
-    +input(user, t('views.users.new.firstname'), 'firstname', errors)(type="text" form='form1')
-    +input(user, t('views.users.new.lastname'), 'lastname', errors)(type="text" form='form1')
+    +input(user, t('views.users.new.firstName'), 'firstName', errors)(type="text" form='form1')
+    +input(user, t('views.users.new.lastName'), 'lastName', errors)(type="text" form='form1')
     +input(user, t('views.users.new.email'), 'email', errors)(type="text" form='form1')
     input(name="_method" type="hidden" value="patch" form='form1')
     .form-group

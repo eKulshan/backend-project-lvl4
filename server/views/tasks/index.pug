@@ -57,8 +57,8 @@ block content
           td= task.labels.map((label) => label.name).join(', ')
           td= task.creator === null ? '' : task.creator.fullName()
           td= task.executor === null ? '' : task.executor.fullName()  
-          td= task.createdAt
-          td= task.updatedAt
+          td= formatDate(task.createdAt)
+          td= formatDate(task.updatedAt)
           td
             a.btn.btn-sm.btn-outline-info(href=`/tasks/${task.id}/edit`)= t('views.tasks.index.edit')
           td  

@@ -1,20 +1,20 @@
 {
   "users": {
     "new": {
-      "firstname": "Dora",
-      "lastname": "Beer",
+      "firstName": "Dora",
+      "lastName": "Beer",
       "email": "Amiya0@yahoo.com",
       "password": "_A48zZGbatyslPM"
     },
     "existing": {
-      "firstname": "Bill",
-      "lastname": "Homenick",
+      "firstName": "Bill",
+      "lastName": "Homenick",
       "email": "Jaquelin.Konopelski@hotmail.com",
       "password": "i3uViox8wUDD173"
     },
     "updateData": {
-      "firstname": "Jaquelin",
-      "lastname": "Konopleski",
+      "firstName": "Jaquelin",
+      "lastName": "Konopleski",
       "email": "jaq.kon@hotmail.com"
     }
   },

@@ -26,8 +26,7 @@ block content
     .form-group
       label(for='labelsSelect')= t('views.tasks.index.labels')    
       select(class="form-control custom-select", size='3', multiple, name='data[labels]', id='labelsSelect')
-        - const activeLabels = (task.labels || []).map(({ id }) => id);
-        - console.log(activeLabels)
+        - const activeLabels = task.labels ? [...task.labels].map(({ id }) => id) : []  
         each label in labels
           option(value=label.id selected=activeLabels.includes(label.id))= `${label.name}`
     

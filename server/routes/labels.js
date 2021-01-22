@@ -14,8 +14,8 @@ export default (app) => {
       reply.render('labels/new', { user: req.user, label });
       return reply;
     })
-    .get('/labels', { name: 'labels' }, async (req, reply) => {
-      const labels = await app.objection.models.label.query();
+    .get('/labels', { name: 'labels', preValidation: app.authenticate }, async (req, reply) => {
+      const labels = await app.objection.models.label.query().orderBy('id');
       reply.render('labels/index', { id: req?.user?.id, labels });
       return reply;
     })

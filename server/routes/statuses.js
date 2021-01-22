@@ -14,8 +14,8 @@ export default (app) => {
       reply.render('statuses/new', { user: req.user, status });
       return reply;
     })
-    .get('/statuses', { name: 'statuses' }, async (req, reply) => {
-      const statuses = await app.objection.models.status.query();
+    .get('/statuses', { name: 'statuses', preValidation: app.authenticate }, async (req, reply) => {
+      const statuses = await app.objection.models.status.query().orderBy('id');
       reply.render('statuses/index', { id: req?.user?.id, statuses });
       return reply;
     })

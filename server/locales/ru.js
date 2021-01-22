@@ -104,8 +104,8 @@ module.exports = {
           signUp: 'Регистрация',
           email: 'Email',
           password: 'Пароль',
-          firstname: 'Имя',
-          lastname: 'Фамилия',
+          firstName: 'Имя',
+          lastName: 'Фамилия',
         },
         edit: {
           edit: 'Редактировать профиль',
@@ -183,8 +183,9 @@ module.exports = {
         },
       },
       errors: {
-        minLength: 'Не должно быть короче 3 символов',
+        minLength: 'Недостаточная длина поля. Требуется символов: ',
         format: 'Должно соответствовать формату эмейл',
+        unique: 'Эмейл уже используется',
         default: 'Неизвестная ошибка',
       },
     },
