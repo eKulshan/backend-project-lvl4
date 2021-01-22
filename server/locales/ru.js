@@ -161,7 +161,7 @@ module.exports = {
       tasks: {
         index: {
           id: 'ID',
-          name: 'Название',
+          name: 'Наименование',
           description: 'Описание',
           status_id: 'Статус',
           labels: 'Метки',
