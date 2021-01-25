@@ -8,24 +8,24 @@ block content
     +input(task, t('views.tasks.index.name'), 'name', errors)(type="text")
     +textarea(task, t('views.tasks.index.description'), 'description', errors)(type="text")
     .form-group
-      label(for='creatorSelect')= t('views.tasks.index.creator_id')
-      select(class="form-control", name='data[creator_id]', id='creatorSelect')
+      label(for='data_creatorId')= t('views.tasks.index.creator_id')
+      select(class="form-control", name='data[creator_id]', id='data_creatorId')
         each user in users
           option(value=user.id selected=(Number(task.creator_id) === user.id))= `${user.fullName()}`
     .form-group
-      label(for='executorSelect')= t('views.tasks.index.executor_id')
-      select(class="form-control", name='data[executor_id]', id='executorSelect')
+      label(for='data_executorId')= t('views.tasks.index.executor_id')
+      select(class="form-control", name='data[executor_id]', id='data_executorId')
         option(value='')= ''
         each user in users
           option(value=user.id selected=(Number(task.executor_id) === user.id))= `${user.fullName()}`
     .form-group
-      label(for='statusSelect')= t('views.tasks.index.status_id')
-      select(class="form-control", name='data[status_id]', id='statusSelect')
+      label(for='data_statusId')= t('views.tasks.index.status_id')
+      select(class="form-control", name='data[status_id]', id='data_statusId')
         each status in statuses
           option(value=status.id selected=(Number(task.status_id) === status.id))= `${status.name}`
     .form-group
-      label(for='labelsSelect')= t('views.tasks.index.labels')    
-      select(class="form-control custom-select", size='3', multiple, name='data[labels]', id='labelsSelect')
+      label(for='data_labels')= t('views.tasks.index.labels')    
+      select(class="form-control custom-select", size='3', multiple, name='data[labels]', id='data_labels')
         - const activeLabels = task.labels ? [...task.labels].map((id) => Number(id)) : []
         each label in labels
           option(value=label.id selected=activeLabels.includes(label.id))= `${label.name}`
