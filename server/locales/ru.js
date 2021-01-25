@@ -175,7 +175,7 @@ module.exports = {
         },
         new: {
           create: 'Создать задачу',
-          submit: 'Сохранить',
+          submit: 'Создать',
         },
         edit: {
           edit: 'Редактировать задачу',
