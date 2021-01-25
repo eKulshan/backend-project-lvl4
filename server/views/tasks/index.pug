@@ -10,26 +10,26 @@ block header
 block content
   form.form-inline.mb-2.bg-light.border.border-grey(action=route('tasks'), method='get')
     .form-group.p-1
-      label.ml-2(for='statusSelect')= 'Статус'
-      select.form-control.ml-1(name='status_id', id='statusSelect')
+      label.ml-2(for='#data_statusId')= 'Статус'
+      select.form-control.ml-1(name='status_id', id='#data_statusId')
         option
         each status in statuses
           option(value=status.id)= `${status.name}`
     .form-group.p-1
-      label.ml-2(for='labelsSelect')= 'Метки'    
-      select.form-control.ml-1(name='labels_id', id='labelsSelect')
+      label.ml-2(for='#data_labels')= 'Метки'    
+      select.form-control.ml-1(name='labels_id', id='#data_labels')
         option
         each label in labels
           option(value=label.id)= `${label.name}`
     .form-group.p-1
-      label.ml-2(for='executorSelect')= 'Исполнитель'
-      select.form-control.ml-1(name='executor_id', id='executorSelect')
+      label.ml-2(for='#data_executorId')= 'Исполнитель'
+      select.form-control.ml-1(name='executor_id', id='#data_executorId')
         option
         each user in users
           option(value=user.id)= `${user.fullName()}`
     .form-group.p-1
-      label.form-check-label.ml-2(for="check")= 'Мои задачи'
-      input.form-check-input.ml-1(type="checkbox" name='isCreatorUser' id="check")
+      label.form-check-label.ml-2(for="#data_isCreatorUser")= 'Мои задачи'
+      input.form-check-input.ml-1(type="checkbox" name='isCreatorUser' id="#data_isCreatorUser")
     .form-group.p-1
       input.btn.btn-primary(type='submit', value='Показать')
   

@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 
-export default (errors) => {
+export default (errors = {}) => {
   const customizeMessages = (errorData) => {
     const customized = { ...errorData };
     console.log('!!!!', customized);

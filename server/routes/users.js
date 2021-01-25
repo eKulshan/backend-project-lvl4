@@ -27,7 +27,6 @@ export default (app) => {
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.create.error'));
-        console.log(data);
         reply.render('users/new', { user: req.body.data, errors: customizeErrors(data) });
         return reply;
       }
