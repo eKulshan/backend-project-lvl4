@@ -10,7 +10,7 @@ block header
 block content
   form.form-inline.mb-2.bg-light.border.border-grey(action=route('tasks'), method='get')
     .form-group.p-1
-      label.ml-2(for='#data_statusId')= 'Статус'
+      label.ml-2(for='#data_status')= 'Статус'
       select.form-control.ml-1(name='status_id', id='#data_statusId')
         option
         each status in statuses
@@ -22,8 +22,8 @@ block content
         each label in labels
           option(value=label.id)= `${label.name}`
     .form-group.p-1
-      label.ml-2(for='#data_executorId')= 'Исполнитель'
-      select.form-control.ml-1(name='executor_id', id='#data_executorId')
+      label.ml-2(for='#data_executor')= 'Исполнитель'
+      select.form-control.ml-1(name='executor_id', id='#data_executor')
         option
         each user in users
           option(value=user.id)= `${user.fullName()}`
