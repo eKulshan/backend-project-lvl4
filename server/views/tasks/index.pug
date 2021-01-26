@@ -11,7 +11,7 @@ block content
   form.form-inline.mb-2.bg-light.border.border-grey(action=route('tasks'), method='get')
     .form-group.p-1
       label.ml-2(for='#data_status')= 'Статус'
-      select.form-control.ml-1(name='status_id', id='#data_statusId')
+      select.form-control.ml-1(name='status_id', id='#data_status')
         option
         each status in statuses
           option(value=status.id)= `${status.name}`

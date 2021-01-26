@@ -25,11 +25,6 @@ html(lang="en").h-100
         ul.navbar-nav
           if isAuthenticated()
             li.nav-item
-              form(action=`/users/${id}/edit`, method="get")
-                input(type='submit' class="btn nav-link" value=t('layouts.application.updateProfile'))
-            li.nav-item
-              +buttonTo(`/users/${id}`, 'delete')(class="btn nav-link" value=t('layouts.application.deleteProfile'))
-            li.nav-item
               +buttonTo(route('session'), 'delete')(class="btn nav-link" value=t('layouts.application.signOut'))
           else
             li.nav-item
