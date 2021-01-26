@@ -96,6 +96,7 @@ module.exports = {
         id: 'ID',
         firstName: 'Имя',
         lastName: 'Фамилия',
+        fullName: 'Полное имя',
         email: 'Email',
         createdAt: 'Создан',
         updatedAt: 'Изменен',
@@ -108,8 +109,8 @@ module.exports = {
           lastName: 'Фамилия',
         },
         edit: {
-          edit: 'Редактировать профиль',
-          submit: 'Сохранить',
+          edit: 'Изменить профиль',
+          submit: 'Изменить',
           signUp: 'Регистрация',
           email: 'Email',
           password: 'Пароль',
@@ -127,35 +128,35 @@ module.exports = {
       statuses: {
         index: {
           id: 'ID',
-          name: 'Название',
-          edit: 'Редактировать',
+          name: 'Наименование',
+          edit: 'Изменить',
           delete: 'Удалить',
           create: 'Создать статус',
         },
         new: {
           create: 'Создать статус',
-          submit: 'Сохранить',
+          submit: 'Изменить',
         },
         edit: {
-          edit: 'Редактировать статус',
-          submit: 'Сохранить',
+          edit: 'Изменить статус',
+          submit: 'Изменить',
         },
       },
       labels: {
         index: {
           id: 'ID',
-          name: 'Название',
-          edit: 'Редактировать',
+          name: 'Наименование',
+          edit: 'Изменить',
           delete: 'Удалить',
           create: 'Создать метку',
         },
         new: {
           create: 'Создать метку',
-          submit: 'Сохранить',
+          submit: 'Изменить',
         },
         edit: {
-          edit: 'Редактировать метку',
-          submit: 'Сохранить',
+          edit: 'Изменить метку',
+          submit: 'Изменить',
         },
       },
       tasks: {
@@ -169,7 +170,7 @@ module.exports = {
           executor_id: 'Исполнитель',
           createdAt: 'Создан',
           updatedAt: 'Изменен',
-          edit: 'Редактировать',
+          edit: 'Изменить',
           delete: 'Удалить',
           create: 'Создать задачу',
         },
@@ -178,8 +179,8 @@ module.exports = {
           submit: 'Создать',
         },
         edit: {
-          edit: 'Редактировать задачу',
-          submit: 'Сохранить',
+          edit: 'Изменить задачу',
+          submit: 'Изменить',
         },
       },
       errors: {

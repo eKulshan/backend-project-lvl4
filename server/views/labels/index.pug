@@ -23,6 +23,6 @@ block content
           td
             a.btn.btn-sm.btn-outline-info(href=`/labels/${label.id}/edit`)= t('views.labels.index.edit')
           td  
-            form(action=`/labels/${label.id}` method='post' onsubmit= "return confirm('Вы подтверждаете удаление?')")
+            form(action=`/labels/${label.id}` method='post')
               input(type='hidden' name='_method' value='delete')
               input.btn.btn-sm.btn-outline-danger(type='submit' value= t('views.labels.index.delete'))

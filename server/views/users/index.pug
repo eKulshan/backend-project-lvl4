@@ -7,18 +7,14 @@ block content
     thead.thead-light
       tr
         th(scope='col')= t('views.users.id')
-        th(scope='col')= t('views.users.firstName')
-        th(scope='col')= t('views.users.lastName')
+        th(scope='col')= t('views.users.fullName')
         th(scope='col')= t('views.users.email')
         th(scope='col')= t('views.users.createdAt')
-        th(scope='col')= t('views.users.updatedAt')
     tbody
       each user in users
         tr
           td= user.id
-          td= user.firstName
-          td= user.lastName
+          td= user.fullName()
           td= user.email
           td= formatDate(user.createdAt)
-          td= formatDate(user.updatedAt)
   
