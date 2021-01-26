@@ -37,7 +37,7 @@ export default (app) => {
       try {
         await user.$query().patch(req.body.data);
         req.flash('info', i18next.t('flash.users.update.success'));
-        reply.redirect(app.reverse('root'), {});
+        reply.redirect(app.reverse('users'), {});
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.update.error'));
@@ -51,7 +51,7 @@ export default (app) => {
         const user = await app.objection.models.user.query().findById(id);
         await user.$query().patch(req.body.data);
         req.flash('info', i18next.t('flash.users.update.success'));
-        reply.redirect(app.reverse('root'), {});
+        reply.redirect(app.reverse('users'), {});
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.update.error'));
@@ -65,7 +65,7 @@ export default (app) => {
         await app.objection.models.user.query().deleteById(id);
         req.logOut();
         req.flash('info', i18next.t('flash.users.delete.success'));
-        reply.redirect(app.reverse('root'), {});
+        reply.redirect(app.reverse('users'), {});
         return reply;
       } catch (e) {
         req.flash('error', i18next.t('flash.users.delete.error'));
