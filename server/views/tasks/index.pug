@@ -8,28 +8,29 @@ block header
       if isAuthenticated()
         a.btn.btn-primary.ml-auto(href=route('newTask'))= t('views.tasks.index.create')
 block content
+  - console.log(query);
   form.form-inline.mb-2.bg-light.border.border-grey(action=route('tasks'), method='get')
     .form-group.p-1
       label.ml-2(for='data_status')= 'Статус'
       select.form-control.ml-1(name='status_id', id='data_status')
         option
         each status in statuses
-          option(value=status.id)= `${status.name}`
+          option(value=status.id selected=(query.status_id === status.id.toString()))= `${status.name}`
     .form-group.p-1
       label.ml-2(for='data_labels')= 'Метки'    
-      select.form-control.ml-1(name='labels_id', id='data_labels')
+      select.form-control.ml-1(name='label_id', id='data_labels')
         option
         each label in labels
-          option(value=label.id)= `${label.name}`
+          option(value=label.id selected=(query.label_id === label.id.toString()))= `${label.name}`
     .form-group.p-1
       label.ml-2(for='data_executor')= 'Исполнитель'
       select.form-control.ml-1(name='executor_id', id='data_executor')
         option
         each user in users
-          option(value=user.id)= `${user.fullName()}`
+          option(value=user.id selected=(query.executor_id === user.id.toString()))= `${user.fullName()}`
     .form-group.p-1
       label.form-check-label.ml-2(for="data_isCreatorUser")= 'Только мои задачи'
-      input.form-check-input.ml-1(type="checkbox" name='isCreatorUser' id="data_isCreatorUser")
+      input.form-check-input.ml-1(type="checkbox" name='isCreatorUser' id="data_isCreatorUser" checked=query.isCreatorUser)
     .form-group.p-1
       input.btn.btn-primary(type='submit', value='Показать')
   

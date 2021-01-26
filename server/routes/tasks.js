@@ -34,10 +34,10 @@ export default (app) => {
         .modify('filterStatus', query.status_id)
         .modify('filterExecutor', query.executor_id)
         .modify('filterIsCreatorUser', query.isCreatorUser === 'on' ? id : null)
-        .modify('filterLabel', query.labels_id)
+        .modify('filterLabel', query.label_id)
         .orderBy('id');
       reply.render('tasks/index', {
-        id, tasks, labels, statuses, users,
+        id, tasks, labels, statuses, users, query,
       });
       return reply;
     })
