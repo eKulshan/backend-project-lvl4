@@ -8,7 +8,6 @@ block header
       if isAuthenticated()
         a.btn.btn-primary.ml-auto(href=route('newTask'))= t('views.tasks.index.create')
 block content
-  - console.log(query);
   form.form-inline.mb-2.bg-light.border.border-grey(action=route('tasks'), method='get')
     .form-group.p-1
       label.ml-2(for='data_status')= 'Статус'

@@ -30,12 +30,16 @@ export default (app) => {
       const users = await app.objection.models.user.query();
       const { id } = req.user;
       const query = req.query || {};
+      console.log('USER ID:', id);
+      console.log('QUERY:', query);
       const tasks = await app.objection.models.task.query().withGraphFetched('[creator, executor, status, labels]')
         .modify('filterStatus', query.status_id)
         .modify('filterExecutor', query.executor_id)
         .modify('filterIsCreatorUser', query.isCreatorUser === 'on' ? id : null)
         .modify('filterLabel', query.label_id)
         .orderBy('id');
+      console.log('ALL TASKS---', await app.objection.models.task.query().withGraphFetched('[creator, executor, status, labels]'));
+      console.log('FILTERED---', tasks);
       reply.render('tasks/index', {
         id, tasks, labels, statuses, users, query,
       });
@@ -98,14 +102,16 @@ export default (app) => {
       try {
         const { id } = req.params;
         const { creatorId } = await app.objection.models.task.query().findById(id);
+        console.log('USER ID:', id, 'CREATOR ID:', creatorId);
         if (req.user.id !== creatorId) {
-          throw new Error();
+          throw new Error('user id check failed');
         }
         await app.objection.models.task.query().deleteById(id);
         req.flash('info', i18next.t('flash.tasks.delete.success'));
         reply.redirect(app.reverse('tasks'), {});
         return reply;
       } catch (e) {
+        console.log(e);
         req.flash('error', i18next.t('flash.tasks.delete.error'));
         reply.redirect(app.reverse('tasks'));
         return reply;
