@@ -8,11 +8,6 @@ block content
     +input(task, t('views.tasks.index.name'), 'name', errors)(type="text")
     +textarea(task, t('views.tasks.index.description'), 'description', errors)(type="text")
     .form-group
-      label(for='data_creatorId')= t('views.tasks.index.creator_id')
-      select(class="form-control", name='data[creator_id]', id='data_creatorId')
-        each user in users
-          option(value=user.id selected=(task.creatorId === user.id))= `${user.fullName()}`
-    .form-group
       label(for='data_executorId')= t('views.tasks.index.executor_id')
       select(class="form-control", name='data[executor_id]', id='data_executorId')
         option(value='')= ''
