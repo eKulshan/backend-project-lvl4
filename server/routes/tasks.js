@@ -116,8 +116,6 @@ export default (app) => {
         reply.redirect(app.reverse('tasks'), {});
         return reply;
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log(e);
         req.flash('error', i18next.t('flash.tasks.delete.error'));
         reply.redirect(app.reverse('tasks'));
         return reply;
