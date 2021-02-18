@@ -14,7 +14,7 @@ env:
   jest: true
 
 rules:
-  no-console: 0
+  no-console: 'warn'
   import/extensions: 0
   new-cap:
     - error

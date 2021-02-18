@@ -45,7 +45,7 @@ export default (app) => {
         return reply;
       }
     })
-    .patch('/users/:id', { preValidation: app.authorize }, async (req, reply) => {
+    .patch('/users/:id', { name: 'patchUser', preValidation: app.authorize }, async (req, reply) => {
       try {
         const { id } = req.params;
         const user = await app.objection.models.user.query().findById(id);
@@ -59,7 +59,7 @@ export default (app) => {
         return reply;
       }
     })
-    .delete('/users/:id', { preValidation: app.authorize }, async (req, reply) => {
+    .delete('/users/:id', { name: 'deleteUser', preValidation: app.authorize }, async (req, reply) => {
       try {
         const { id } = req.params;
         await app.objection.models.user.query().deleteById(id);

@@ -1,6 +1,6 @@
 import getApp from '../server/index.js';
 import {
-  getTestData, prepareData, logInUser, getCookie,
+  getTestData, prepareData, getCookie,
 } from './helpers/index.js';
 
 describe('test labels CRUD', () => {
@@ -8,6 +8,7 @@ describe('test labels CRUD', () => {
   let knex;
   let models;
   let testData;
+  let cookies;
 
   beforeAll(async () => {
     app = await getApp();
@@ -19,13 +20,14 @@ describe('test labels CRUD', () => {
   beforeEach(async () => {
     await knex.migrate.latest();
     await prepareData(app);
+    cookies = await getCookie(app, testData.users.existing);
   });
 
   it('read', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('labels'),
-      cookies: getCookie(await logInUser(app, testData.users.existing)),
+      cookies,
     });
 
     expect(response.statusCode).toBe(200);
@@ -34,54 +36,63 @@ describe('test labels CRUD', () => {
   it('new', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('newStatus'),
-      cookies: getCookie(await logInUser(app, testData.users.existing)),
+      url: app.reverse('newLabel'),
+      cookies,
     });
 
     expect(response.statusCode).toBe(200);
   });
 
   it('create', async () => {
-    const newStatusData = testData.labels.new;
+    const labelData = testData.labels.new;
     const response = await app.inject({
       method: 'POST',
       url: app.reverse('labels'),
       payload: {
-        data: newStatusData,
+        data: labelData,
       },
-      cookies: getCookie(await logInUser(app, testData.users.existing)),
+      cookies,
     });
     expect(response.statusCode).toBe(302);
 
-    const expected = { ...newStatusData };
-    const labels = await models.label.query().findOne({ name: newStatusData.name });
-    expect(labels).toMatchObject(expected);
+    const expected = await models.label.query().findOne({ name: labelData.name });
+    expect(expected).toMatchObject(labelData);
+  });
+
+  it('edit', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('editLabel', { id: 1 }),
+      cookies,
+    });
+
+    expect(response.statusCode).toBe(200);
   });
 
   it('update', async () => {
-    const dataForUpdate = testData.labels.updateData;
+    const labelData = testData.labels.updateData;
     const { id } = await models.label.query().findOne({ name: testData.labels.existing.name });
     const response = await app.inject({
       method: 'PATCH',
-      url: `/labels/${id}`,
+      url: app.reverse('patchLabel', { id }),
       payload: {
-        data: { ...dataForUpdate },
+        data: labelData,
       },
-      cookies: getCookie(await logInUser(app, testData.users.existing)),
+      cookies,
     });
     expect(response.statusCode).toBe(302);
 
-    const expected = await models.label.query().findOne({ name: dataForUpdate.name });
-    expect(expected).toMatchObject(dataForUpdate);
+    const expected = await models.label.query().findOne({ name: labelData.name });
+    expect(expected).toMatchObject(labelData);
   });
 
   it('delete', async () => {
-    const existingStatusData = testData.labels.existing;
-    const { id } = await models.label.query().findOne({ name: existingStatusData.name });
+    const labelData = testData.labels.existing;
+    const { id } = await models.label.query().findOne({ name: labelData.name });
     const response = await app.inject({
       method: 'DELETE',
-      url: `/labels/${id}`,
-      cookies: getCookie(await logInUser(app, testData.users.existing)),
+      url: app.reverse('deleteLabel', { id }),
+      cookies,
     });
     expect(response.statusCode).toBe(302);
 

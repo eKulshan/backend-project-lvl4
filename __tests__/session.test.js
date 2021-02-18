@@ -1,5 +1,5 @@
 import getApp from '../server/index.js';
-import { getTestData, prepareData } from './helpers/index.js';
+import { getTestData, prepareData, getCookie } from './helpers/index.js';
 
 describe('test session', () => {
   let app;
@@ -14,14 +14,16 @@ describe('test session', () => {
     testData = getTestData();
   });
 
-  it('test sign in / sign out', async () => {
+  it('get sign in page', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('newSession'),
     });
 
     expect(response.statusCode).toBe(200);
+  });
 
+  it('test sign in', async () => {
     const responseSignIn = await app.inject({
       method: 'POST',
       url: app.reverse('session'),
@@ -31,25 +33,16 @@ describe('test session', () => {
     });
 
     expect(responseSignIn.statusCode).toBe(302);
+  });
 
-    const [sessionCookie] = responseSignIn.cookies;
-    const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
-
+  it('test sing out', async () => {
     const responseSignOut = await app.inject({
       method: 'DELETE',
       url: app.reverse('session'),
-      cookies: cookie,
+      cookies: await getCookie(app, testData.users.existing),
     });
 
     expect(responseSignOut.statusCode).toBe(302);
-
-    // const responseSessionDeleteCheck = await app.inject({
-    //   method: 'GET',
-    //   url: app.reverse('root'),
-    // });
-    // console.log(responseSessionDeleteCheck.cookies);
-    // expect(responseSessionDeleteCheck.cookies).toBeUndefined();
   });
 
   afterAll(async () => {

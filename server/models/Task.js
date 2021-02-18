@@ -80,7 +80,7 @@ export default class Task extends Model {
         description: { type: 'string' },
         status_id: { type: 'number' },
         creator_id: { type: 'number' },
-        executor_id: { type: 'number' },
+        executor_id: { type: ['number', 'null'] },
         labels: { type: ['number', 'array'], items: { type: 'object', properties: 'id' } },
       },
     };

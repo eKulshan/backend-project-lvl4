@@ -1,6 +1,6 @@
 import getApp from '../server/index.js';
 import {
-  getTestData, prepareData, logInUser, getCookie,
+  getTestData, prepareData, getCookie,
 } from './helpers/index.js';
 
 describe('test tasks CRUD', () => {
@@ -8,6 +8,7 @@ describe('test tasks CRUD', () => {
   let knex;
   let models;
   let testData;
+  let cookies;
 
   beforeAll(async () => {
     app = await getApp();
@@ -19,13 +20,14 @@ describe('test tasks CRUD', () => {
   beforeEach(async () => {
     await knex.migrate.latest();
     await prepareData(app);
+    cookies = await getCookie(app, testData.users.existing);
   });
 
   it('read', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('tasks'),
-      cookies: getCookie(await logInUser(app, testData.users.existing)),
+      cookies,
     });
 
     expect(response.statusCode).toBe(200);
@@ -35,27 +37,35 @@ describe('test tasks CRUD', () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('newTask'),
-      cookies: getCookie(await logInUser(app, testData.users.existing)),
+      cookies,
     });
 
     expect(response.statusCode).toBe(200);
   });
 
   it('create', async () => {
-    const newTaskData = testData.tasks.new;
+    const taskData = testData.tasks.new;
     const response = await app.inject({
       method: 'POST',
       url: app.reverse('tasks'),
       payload: {
-        data: newTaskData,
+        data: taskData,
       },
-      cookies: getCookie(await logInUser(app, testData.users.existing)),
+      cookies,
     });
     expect(response.statusCode).toBe(302);
+    const expected = await models.task.query().findOne({ name: taskData.name }).withGraphFetched('labels');
+    expect(expected).toMatchObject(testData.tasks.expectedNew);
+  });
 
-    const expected = testData.tasks.expectedNew;
-    const task = await models.task.query().findOne({ name: newTaskData.name });
-    expect(task).toMatchObject(expected);
+  it('edit', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('editTask', { id: 1 }),
+      cookies,
+    });
+
+    expect(response.statusCode).toBe(200);
   });
 
   it('update', async () => {
@@ -63,17 +73,16 @@ describe('test tasks CRUD', () => {
     const { id } = await models.task.query().findOne({ name: testData.tasks.existing.name });
     const response = await app.inject({
       method: 'PATCH',
-      url: `/tasks/${id}`,
+      url: app.reverse('patchTask', { id }),
       payload: {
         data: { ...updateData },
       },
-      cookies: getCookie(await logInUser(app, testData.users.existing)),
+      cookies,
     });
     expect(response.statusCode).toBe(302);
 
-    const expected = testData.tasks.expectedUpdatedData;
-    const task = await models.task.query().findOne({ name: updateData.name });
-    expect(task).toMatchObject(expected);
+    const expected = await models.task.query().findOne({ name: updateData.name }).withGraphFetched('labels');
+    expect(expected).toMatchObject(testData.tasks.expectedUpdated);
   });
 
   it('delete', async () => {
@@ -81,8 +90,8 @@ describe('test tasks CRUD', () => {
     const { id } = await models.task.query().findOne({ name: existingTaskData.name });
     const response = await app.inject({
       method: 'DELETE',
-      url: `/tasks/${id}`,
-      cookies: getCookie(await logInUser(app, testData.users.existing)),
+      url: app.reverse('deleteTask', { id }),
+      cookies,
     });
     expect(response.statusCode).toBe(302);
 

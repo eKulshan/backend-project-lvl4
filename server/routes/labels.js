@@ -32,9 +32,9 @@ export default (app) => {
         return reply;
       }
     })
-    .patch('/labels/:id', { preValidation: app.authenticate }, async (req, reply) => {
+    .patch('/labels/:id', { name: 'patchLabel', preValidation: app.authenticate }, async (req, reply) => {
+      const { id } = req.params;
       try {
-        const { id } = req.params;
         const updateData = await app.objection.models.label.fromJson(req.body.data);
         const label = await app.objection.models.label.query().findById(id);
         await label.$query().update(updateData);
@@ -43,11 +43,11 @@ export default (app) => {
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.labels.update.error'));
-        reply.render('labels/edit', { label: req.body.data, errors: customizeErrors(data) });
+        reply.render('labels/edit', { label: { id, ...req.body.data }, errors: customizeErrors(data) });
         return reply;
       }
     })
-    .delete('/labels/:id', { preValidation: app.authenticate }, async (req, reply) => {
+    .delete('/labels/:id', { name: 'deleteLabel', preValidation: app.authenticate }, async (req, reply) => {
       try {
         const { id } = req.params;
         await app.objection.models.label.query().deleteById(id);
