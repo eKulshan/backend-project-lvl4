@@ -54,7 +54,6 @@ export default (app) => {
         await app.objection.models.task.query().insertGraph(normalizedData, { relate: true });
         req.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect(app.reverse('tasks'), {});
-        return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.tasks.create.error'));
         const labels = await app.objection.models.label.query();
@@ -69,8 +68,8 @@ export default (app) => {
           task: req.body.data,
           errors: customizeErrors(data),
         });
-        return reply;
       }
+      return reply;
     })
     .patch('/tasks/:id', { name: 'patchTask', preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
@@ -88,7 +87,6 @@ export default (app) => {
           .upsertGraph(normalizedData, { relate: true, unrelate: true });
         req.flash('info', i18next.t('flash.tasks.update.success'));
         reply.redirect(app.reverse('tasks'), {});
-        return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.tasks.update.error'));
         const labels = await app.objection.models.label.query();
@@ -103,12 +101,12 @@ export default (app) => {
           task: { ...req.body.data, id },
           errors: customizeErrors(data),
         });
-        return reply;
       }
+      return reply;
     })
     .delete('/tasks/:id', { name: 'deleteTask', preValidation: app.authenticate }, async (req, reply) => {
+      const { id } = req.params;
       try {
-        const { id } = req.params;
         const { creatorId } = await app.objection.models.task.query().findById(id);
         if (req.user.id !== creatorId) {
           throw new Error('User authorization failed');
@@ -116,11 +114,10 @@ export default (app) => {
         await app.objection.models.task.query().deleteById(id);
         req.flash('info', i18next.t('flash.tasks.delete.success'));
         reply.redirect(app.reverse('tasks'), {});
-        return reply;
       } catch (e) {
         req.flash('error', i18next.t('flash.tasks.delete.error'));
         reply.redirect(app.reverse('tasks'));
-        return reply;
       }
+      return reply;
     });
 };

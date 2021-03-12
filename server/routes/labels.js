@@ -25,13 +25,12 @@ export default (app) => {
         await app.objection.models.label.query().insert(label);
         req.flash('info', i18next.t('flash.labels.create.success'));
         reply.redirect(app.reverse('labels'));
-        return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.labels.create.error'));
         reply.code(422);
         reply.render('labels/new', { label: req.body.data, errors: customizeErrors(data) });
-        return reply;
       }
+      return reply;
     })
     .patch('/labels/:id', { name: 'patchLabel', preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
@@ -41,25 +40,23 @@ export default (app) => {
         await label.$query().update(updateData);
         req.flash('info', i18next.t('flash.labels.update.success'));
         reply.redirect(app.reverse('labels'));
-        return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.labels.update.error'));
         reply.code(422);
         reply.render('labels/edit', { label: { id, ...req.body.data }, errors: customizeErrors(data) });
-        return reply;
       }
+      return reply;
     })
     .delete('/labels/:id', { name: 'deleteLabel', preValidation: app.authenticate }, async (req, reply) => {
+      const { id } = req.params;
       try {
-        const { id } = req.params;
         await app.objection.models.label.query().deleteById(id);
         req.flash('info', i18next.t('flash.labels.delete.success'));
         reply.redirect(app.reverse('labels'));
-        return reply;
       } catch (e) {
         req.flash('error', i18next.t('flash.labels.delete.error'));
         reply.redirect(app.reverse('labels'));
-        return reply;
       }
+      return reply;
     });
 };

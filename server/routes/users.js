@@ -24,13 +24,12 @@ export default (app) => {
         await app.objection.models.user.query().insert(req.body.data);
         req.flash('info', i18next.t('flash.users.create.success'));
         reply.redirect(app.reverse('root'), {});
-        return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.create.error'));
         reply.code(422);
         reply.render('users/new', { user: req.body.data, errors: customizeErrors(data) });
-        return reply;
       }
+      return reply;
     })
     .patch('/users/:id/password', { preValidation: app.authorize }, async (req, reply) => {
       const { id } = req.params;
@@ -39,41 +38,38 @@ export default (app) => {
         await user.$query().patch(req.body.data);
         req.flash('info', i18next.t('flash.users.update.success'));
         reply.redirect(app.reverse('users'), {});
-        return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.update.error'));
         reply.code(422);
         reply.render('users/edit', { id: req.user.id, user, errors: customizeErrors(data) });
-        return reply;
       }
+      return reply;
     })
     .patch('/users/:id', { name: 'patchUser', preValidation: app.authorize }, async (req, reply) => {
+      const { id } = req.params;
       try {
-        const { id } = req.params;
         const user = await app.objection.models.user.query().findById(id);
         await user.$query().patch(req.body.data);
         req.flash('info', i18next.t('flash.users.update.success'));
         reply.redirect(app.reverse('users'), {});
-        return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.update.error'));
         reply.code(422);
         reply.render('users/edit', { id: req.user.id, user: req.body.data, errors: customizeErrors(data) });
-        return reply;
       }
+      return reply;
     })
     .delete('/users/:id', { name: 'deleteUser', preValidation: app.authorize }, async (req, reply) => {
+      const { id } = req.params;
       try {
-        const { id } = req.params;
         await app.objection.models.user.query().deleteById(id);
         req.logOut();
         req.flash('info', i18next.t('flash.users.delete.success'));
         reply.redirect(app.reverse('users'), {});
-        return reply;
       } catch (e) {
         req.flash('error', i18next.t('flash.users.delete.error'));
         reply.redirect(app.reverse('users'));
-        return reply;
       }
+      return reply;
     });
 };
