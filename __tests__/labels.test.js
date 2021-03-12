@@ -1,6 +1,6 @@
 import getApp from '../server/index.js';
 import {
-  getTestData, prepareData, getCookie,
+  getTestData, prepareData, singIn,
 } from './helpers/index.js';
 
 describe('test labels CRUD', () => {
@@ -8,7 +8,7 @@ describe('test labels CRUD', () => {
   let knex;
   let models;
   let testData;
-  let cookies;
+  let cookie;
 
   beforeAll(async () => {
     app = await getApp();
@@ -20,14 +20,14 @@ describe('test labels CRUD', () => {
   beforeEach(async () => {
     await knex.migrate.latest();
     await prepareData(app);
-    cookies = await getCookie(app, testData.users.existing);
+    cookie = await singIn(app, testData.users.existing);
   });
 
   it('read', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('labels'),
-      cookies,
+      cookies: cookie,
     });
 
     expect(response.statusCode).toBe(200);
@@ -37,7 +37,7 @@ describe('test labels CRUD', () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('newLabel'),
-      cookies,
+      cookies: cookie,
     });
 
     expect(response.statusCode).toBe(200);
@@ -51,7 +51,7 @@ describe('test labels CRUD', () => {
       payload: {
         data: labelData,
       },
-      cookies,
+      cookies: cookie,
     });
     expect(response.statusCode).toBe(302);
 
@@ -63,7 +63,7 @@ describe('test labels CRUD', () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('editLabel', { id: 1 }),
-      cookies,
+      cookies: cookie,
     });
 
     expect(response.statusCode).toBe(200);
@@ -78,7 +78,7 @@ describe('test labels CRUD', () => {
       payload: {
         data: labelData,
       },
-      cookies,
+      cookies: cookie,
     });
     expect(response.statusCode).toBe(302);
 
@@ -92,7 +92,7 @@ describe('test labels CRUD', () => {
     const response = await app.inject({
       method: 'DELETE',
       url: app.reverse('deleteLabel', { id }),
-      cookies,
+      cookies: cookie,
     });
     expect(response.statusCode).toBe(302);
 

@@ -13,6 +13,7 @@ export default (app) => {
       if (!user) {
         const signInForm = req.body.data;
         req.flash('error', i18next.t('flash.session.create.error'));
+        reply.code(422);
         return reply.render('session/new', { signInForm });
       }
       await req.logIn(user);

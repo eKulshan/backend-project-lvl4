@@ -20,7 +20,7 @@ export default (app) => {
       const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
       reply.render('tasks/new', {
-        user: req.user, task, labels, users, statuses,
+        task, labels, users, statuses,
       });
       return reply;
     })
@@ -37,7 +37,7 @@ export default (app) => {
         .modify('filterLabel', query.label_id)
         .orderBy('id');
       reply.render('tasks/index', {
-        id, tasks, labels, statuses, users, query,
+        tasks, labels, statuses, users, query,
       });
       return reply;
     })
@@ -60,6 +60,7 @@ export default (app) => {
         const labels = await app.objection.models.label.query();
         const statuses = await app.objection.models.status.query();
         const users = await app.objection.models.user.query();
+        reply.code(422);
         reply.render('tasks/new', {
           user: req.user,
           labels,
@@ -93,6 +94,7 @@ export default (app) => {
         const labels = await app.objection.models.label.query();
         const statuses = await app.objection.models.status.query();
         const users = await app.objection.models.user.query();
+        reply.code(422);
         reply.render('tasks/edit', {
           user: req.user,
           labels,
@@ -109,7 +111,7 @@ export default (app) => {
         const { id } = req.params;
         const { creatorId } = await app.objection.models.task.query().findById(id);
         if (req.user.id !== creatorId) {
-          throw new Error('user id check failed'); // TODO сделать нормальную ошибку и правильное флеш сообщение
+          throw new Error('User authorization failed');
         }
         await app.objection.models.task.query().deleteById(id);
         req.flash('info', i18next.t('flash.tasks.delete.success'));

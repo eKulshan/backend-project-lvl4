@@ -6,7 +6,7 @@ export default (app) => {
     .get('/users/:id/edit', { name: 'editUser', preValidation: app.authorize }, async (req, reply) => {
       const { id } = req.params;
       const user = await app.objection.models.user.query().findById(id);
-      reply.render('users/edit', { id: req.user.id, user });
+      reply.render('users/edit', { user });
       return reply;
     })
     .get('/users/new', { name: 'newUser' }, (req, reply) => {
@@ -16,7 +16,7 @@ export default (app) => {
     })
     .get('/users', { name: 'users' }, async (req, reply) => {
       const users = await app.objection.models.user.query();
-      reply.render('users/index', { id: req?.user?.id, users });
+      reply.render('users/index', { users });
       return reply;
     })
     .post('/users', async (req, reply) => {
@@ -27,6 +27,7 @@ export default (app) => {
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.create.error'));
+        reply.code(422);
         reply.render('users/new', { user: req.body.data, errors: customizeErrors(data) });
         return reply;
       }
@@ -41,6 +42,7 @@ export default (app) => {
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.update.error'));
+        reply.code(422);
         reply.render('users/edit', { id: req.user.id, user, errors: customizeErrors(data) });
         return reply;
       }
@@ -55,6 +57,7 @@ export default (app) => {
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.users.update.error'));
+        reply.code(422);
         reply.render('users/edit', { id: req.user.id, user: req.body.data, errors: customizeErrors(data) });
         return reply;
       }

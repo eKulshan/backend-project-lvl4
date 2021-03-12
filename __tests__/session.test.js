@@ -1,5 +1,5 @@
 import getApp from '../server/index.js';
-import { getTestData, prepareData, getCookie } from './helpers/index.js';
+import { getTestData, prepareData, singIn } from './helpers/index.js';
 
 describe('test session', () => {
   let app;
@@ -39,7 +39,7 @@ describe('test session', () => {
     const responseSignOut = await app.inject({
       method: 'DELETE',
       url: app.reverse('session'),
-      cookies: await getCookie(app, testData.users.existing),
+      cookies: await singIn(app, testData.users.existing),
     });
 
     expect(responseSignOut.statusCode).toBe(302);

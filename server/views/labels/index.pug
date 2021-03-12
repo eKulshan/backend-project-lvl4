@@ -5,8 +5,7 @@ block header
     .col-auto
       h1= 'Метки задач'
     .col-auto
-       if isAuthenticated()
-        a.btn.btn-primary.ml-auto(href=route('newLabel'))= t('views.labels.index.create')
+      a.btn.btn-primary.ml-auto(href=route('newLabel'))= t('views.labels.index.create')
 block content
   table.table.table-hover.border.border-grey
     thead.thead-light

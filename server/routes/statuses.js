@@ -11,12 +11,12 @@ export default (app) => {
     })
     .get('/statuses/new', { name: 'newStatus', preValidation: app.authenticate }, async (req, reply) => {
       const status = await new app.objection.models.status();
-      reply.render('statuses/new', { user: req.user, status });
+      reply.render('statuses/new', { status });
       return reply;
     })
     .get('/statuses', { name: 'statuses', preValidation: app.authenticate }, async (req, reply) => {
       const statuses = await app.objection.models.status.query().orderBy('id');
-      reply.render('statuses/index', { id: req?.user?.id, statuses });
+      reply.render('statuses/index', { statuses });
       return reply;
     })
     .post('/statuses', { preValidation: app.authenticate }, async (req, reply) => {
@@ -24,10 +24,11 @@ export default (app) => {
         const status = await app.objection.models.status.fromJson(req.body.data);
         await app.objection.models.status.query().insert(status);
         req.flash('info', i18next.t('flash.statuses.create.success'));
-        reply.redirect(app.reverse('statuses'), {});
+        reply.redirect(app.reverse('statuses'));
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.statuses.create.error'));
+        reply.code(422);
         reply.render('statuses/new', { status: req.body.data, errors: customizeErrors(data) });
         return reply;
       }
@@ -39,10 +40,11 @@ export default (app) => {
         const status = await app.objection.models.status.query().findById(id);
         await status.$query().update(updateData);
         req.flash('info', i18next.t('flash.statuses.update.success'));
-        reply.redirect(app.reverse('statuses'), {});
+        reply.redirect(app.reverse('statuses'));
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.statuses.update.error'));
+        reply.code(422);
         reply.render('statuses/edit', { status: { id, ...req.body.data }, errors: customizeErrors(data) });
         return reply;
       }
@@ -52,7 +54,7 @@ export default (app) => {
         const { id } = req.params;
         await app.objection.models.status.query().deleteById(id);
         req.flash('info', i18next.t('flash.statuses.delete.success'));
-        reply.redirect(app.reverse('statuses'), {});
+        reply.redirect(app.reverse('statuses'));
         return reply;
       } catch (e) {
         req.flash('error', i18next.t('flash.statuses.delete.error'));

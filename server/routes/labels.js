@@ -11,12 +11,12 @@ export default (app) => {
     })
     .get('/labels/new', { name: 'newLabel', preValidation: app.authenticate }, async (req, reply) => {
       const label = await new app.objection.models.label();
-      reply.render('labels/new', { user: req.user, label });
+      reply.render('labels/new', { label });
       return reply;
     })
     .get('/labels', { name: 'labels', preValidation: app.authenticate }, async (req, reply) => {
       const labels = await app.objection.models.label.query().orderBy('id');
-      reply.render('labels/index', { id: req?.user?.id, labels });
+      reply.render('labels/index', { labels });
       return reply;
     })
     .post('/labels', { preValidation: app.authenticate }, async (req, reply) => {
@@ -24,10 +24,11 @@ export default (app) => {
         const label = await app.objection.models.label.fromJson(req.body.data);
         await app.objection.models.label.query().insert(label);
         req.flash('info', i18next.t('flash.labels.create.success'));
-        reply.redirect(app.reverse('labels'), {});
+        reply.redirect(app.reverse('labels'));
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.labels.create.error'));
+        reply.code(422);
         reply.render('labels/new', { label: req.body.data, errors: customizeErrors(data) });
         return reply;
       }
@@ -39,10 +40,11 @@ export default (app) => {
         const label = await app.objection.models.label.query().findById(id);
         await label.$query().update(updateData);
         req.flash('info', i18next.t('flash.labels.update.success'));
-        reply.redirect(app.reverse('labels'), {});
+        reply.redirect(app.reverse('labels'));
         return reply;
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.labels.update.error'));
+        reply.code(422);
         reply.render('labels/edit', { label: { id, ...req.body.data }, errors: customizeErrors(data) });
         return reply;
       }
@@ -52,7 +54,7 @@ export default (app) => {
         const { id } = req.params;
         await app.objection.models.label.query().deleteById(id);
         req.flash('info', i18next.t('flash.labels.delete.success'));
-        reply.redirect(app.reverse('labels'), {});
+        reply.redirect(app.reverse('labels'));
         return reply;
       } catch (e) {
         req.flash('error', i18next.t('flash.labels.delete.error'));

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import getApp from '../server/index.js';
 import encrypt from '../server/lib/secure.js';
 import {
-  getTestData, prepareData, getCookie,
+  getTestData, prepareData, singIn,
 } from './helpers/index.js';
 
 describe('test users CRUD', () => {
@@ -10,7 +10,7 @@ describe('test users CRUD', () => {
   let knex;
   let models;
   let testData;
-  let cookies;
+  let cookie;
 
   beforeAll(async () => {
     app = await getApp();
@@ -22,14 +22,14 @@ describe('test users CRUD', () => {
   beforeEach(async () => {
     await knex.migrate.latest();
     await prepareData(app);
-    cookies = await getCookie(app, testData.users.existing);
+    cookie = await singIn(app, testData.users.existing);
   });
 
   it('read', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('users'),
-      cookies,
+      cookies: cookie,
     });
 
     expect(response.statusCode).toBe(200);
@@ -66,7 +66,7 @@ describe('test users CRUD', () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('editUser', { id: 1 }),
-      cookies,
+      cookies: cookie,
     });
 
     expect(response.statusCode).toBe(200);
@@ -80,7 +80,7 @@ describe('test users CRUD', () => {
       payload: {
         data: { ...testData.users.existing, ...testData.users.updateData },
       },
-      cookies,
+      cookies: cookie,
     });
     expect(responseUpdateUser.statusCode).toBe(302);
 
@@ -97,7 +97,7 @@ describe('test users CRUD', () => {
     const responseDeleteUser = await app.inject({
       method: 'DELETE',
       url: app.reverse('deleteUser', { id }),
-      cookies,
+      cookies: cookie,
     });
     expect(responseDeleteUser.statusCode).toBe(302);
 
