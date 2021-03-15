@@ -1,10 +1,6 @@
-.idea/
-.vscode/
 node_modules/
 build/
 dist/
-tmp/
-temp/
 database.sqlite
 Procfile.dev
 coverage

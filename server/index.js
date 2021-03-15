@@ -105,7 +105,7 @@ const registerPlugins = (app) => {
     'authenticate',
     {
       failureRedirect: app.reverse('root'),
-      failureFlash: i18next.t('flash.authError'),
+      failureFlash: i18next.t('flash.authenticateError'),
     },
   )(...args));
   app.decorate('authorize', (...args) => fastifyPassport.authenticate(

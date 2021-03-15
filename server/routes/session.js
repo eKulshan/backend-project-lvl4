@@ -3,7 +3,7 @@ import i18next from 'i18next';
 export default (app) => {
   app
     .get('/session/new', { name: 'newSession' }, (req, reply) => {
-      const signInForm = {};
+      const signInForm = new app.objection.models.user();
       reply.render('session/new', { signInForm });
     })
     .post('/session', { name: 'session' }, app.fp.authenticate('authenticate', async (req, reply, err, user) => {
