@@ -109,7 +109,8 @@ export default (app) => {
       try {
         const { creatorId } = await app.objection.models.task.query().findById(id);
         if (req.user.id !== creatorId) {
-          throw new Error('User authorization failed');
+          req.flash('error', i18next.t('flash.tasks.delete.error'));
+          reply.redirect(app.reverse('tasks'));
         }
         await app.objection.models.task.query().deleteById(id);
         req.flash('info', i18next.t('flash.tasks.delete.success'));
