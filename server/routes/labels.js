@@ -19,7 +19,7 @@ export default (app) => {
       reply.render('labels/index', { labels });
       return reply;
     })
-    .post('/labels', { preValidation: app.authenticate }, async (req, reply) => {
+    .post('/labels', { name: 'createLabel', preValidation: app.authenticate }, async (req, reply) => {
       try {
         const label = await app.objection.models.label.fromJson(req.body.data);
         await app.objection.models.label.query().insert(label);

@@ -4,7 +4,7 @@ block header
   = t('views.tasks.new.create')
 
 block content
-  +formFor()(action=route('tasks') method='post')
+  +formFor()(action=route('createTask') method='post')
     +input(task, t('views.tasks.index.name'), 'name', errors)(type="text")
     +textarea(task, t('views.tasks.index.description'), 'description', errors)(type="text")
     .form-group

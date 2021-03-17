@@ -20,8 +20,8 @@ block content
           td= label.id
           td= label.name
           td
-            a.btn.btn-sm.btn-outline-info(href=`/labels/${label.id}/edit`)= t('views.labels.index.edit')
+            a.btn.btn-sm.btn-outline-info(href=route('editLabel', {id: label.id}))= t('views.labels.index.edit')
           td  
-            form(action=`/labels/${label.id}` method='post')
+            form(action=route('deleteLabel', {id: label.id}) method='post')
               input(type='hidden' name='_method' value='delete')
               input.btn.btn-sm.btn-outline-danger(type='submit' value= t('views.labels.index.delete'))

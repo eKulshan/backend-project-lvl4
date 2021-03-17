@@ -19,7 +19,7 @@ export default (app) => {
       reply.render('statuses/index', { statuses });
       return reply;
     })
-    .post('/statuses', { preValidation: app.authenticate }, async (req, reply) => {
+    .post('/statuses', { name: 'createStatus', preValidation: app.authenticate }, async (req, reply) => {
       try {
         const status = await app.objection.models.status.fromJson(req.body.data);
         await app.objection.models.status.query().insert(status);

@@ -5,7 +5,7 @@ block header
 
 block content
   h3= 'Изменнить данные'
-  form(action=`/users/${user.id}` method='post' id='form1')
+  form(action=route('patchUser', { id: user.id }) method='post' id='form1')
     +input(user, t('views.users.new.firstName'), 'firstName', errors)(type="text" form='form1')
     +input(user, t('views.users.new.lastName'), 'lastName', errors)(type="text" form='form1')
     +input(user, t('views.users.new.email'), 'email', errors)(type="text" form='form1')
@@ -14,7 +14,7 @@ block content
       input(class='btn btn-primary' type='submit' value=t('views.users.edit.submit') form='form1')
   
   h3= 'Изменнить пароль'
-  form(action=`/users/${id}/password` method='post' id='form2')
+  form(action=route('patchUserPassword', { id: user.id }) method='post' id='form2')
     +passwordInput(user, t('views.users.new.password'), 'password', errors)(type="password" form='form2')
     input(name="_method" type="hidden" value="patch" form='form2')
     .form-group

@@ -4,7 +4,7 @@ block header
   = t('views.tasks.edit.edit')
 
 block content
-  form(action=`/tasks/${task.id}` method='post')
+  form(action=route('patchTask', { id: task.id }) method='post')
     +input(task, t('views.tasks.index.name'), 'name', errors)(type="text")
     +textarea(task, t('views.tasks.index.description'), 'description', errors)(type="text")
     .form-group

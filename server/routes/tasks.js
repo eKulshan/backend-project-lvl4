@@ -41,7 +41,7 @@ export default (app) => {
       });
       return reply;
     })
-    .post('/tasks', { preValidation: app.authenticate }, async (req, reply) => {
+    .post('/tasks', { name: 'createTask', preValidation: app.authenticate }, async (req, reply) => {
       try {
         const { data } = req.body;
         const normalizedData = {

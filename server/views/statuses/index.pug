@@ -21,8 +21,8 @@ block content
           td= status.id
           td= status.name
           td
-            a.btn.btn-sm.btn-outline-info(href=`/statuses/${status.id}/edit`)= t('views.statuses.index.edit')
+            a.btn.btn-sm.btn-outline-info(href=route('editStatus', { id: status.id }))= t('views.statuses.index.edit')
           td 
-            form(action=`/statuses/${status.id}` method='post')
+            form(action=route('deleteStatus', { id: status.id }) method='post')
               input(type='hidden' name='_method' value='delete')
               input.btn.btn-sm.btn-outline-danger(type='submit' value= t('views.statuses.index.delete'))

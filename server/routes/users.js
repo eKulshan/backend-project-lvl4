@@ -19,7 +19,7 @@ export default (app) => {
       reply.render('users/index', { users });
       return reply;
     })
-    .post('/users', async (req, reply) => {
+    .post('/users', { name: 'createUser' }, async (req, reply) => {
       try {
         await app.objection.models.user.query().insert(req.body.data);
         req.flash('info', i18next.t('flash.users.create.success'));
@@ -31,7 +31,7 @@ export default (app) => {
       }
       return reply;
     })
-    .patch('/users/:id/password', { preValidation: app.authorize }, async (req, reply) => {
+    .patch('/users/:id/password', { name: 'patchUserPassword', preValidation: app.authorize }, async (req, reply) => {
       const { id } = req.params;
       const user = await app.objection.models.user.query().findById(id);
       try {

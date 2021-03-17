@@ -19,6 +19,6 @@ block content
           td= user.email
           td= formatDate(user.createdAt)
           td
-            +buttonTo(`/users/${user.id}/edit`, 'get')(class="btn btn-sm btn-outline-info m-1" value=t('layouts.application.updateProfile'))
-            +buttonTo(`/users/${user.id}`, 'post', 'delete')(class="btn btn-sm btn-outline-danger m-1" value=t('layouts.application.deleteProfile'))
+            +buttonTo(route('editUser', { id: user.id }), 'get')(class="btn btn-sm btn-outline-info m-1" value=t('layouts.application.updateProfile'))
+            +buttonTo(route('deleteUser', { id: user.id }), 'post', 'delete')(class="btn btn-sm btn-outline-danger m-1" value=t('layouts.application.deleteProfile'))
   
