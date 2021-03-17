@@ -60,7 +60,7 @@ block content
           td= formatDate(task.createdAt)
           td= formatDate(task.updatedAt)
           td
-            a.btn.btn-sm.btn-outline-info(href=route('editStatus', { id: task.id }))= t('views.tasks.index.edit')
+            a.btn.btn-sm.btn-outline-info(href=route('editTask', { id: task.id }))= t('views.tasks.index.edit')
           td  
             form(action=route('deleteStatus', { id: task.id }) method='post')
               input(type='hidden' name='_method' value='delete')
